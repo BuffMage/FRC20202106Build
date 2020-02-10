@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//Created by David Dick
+//Created by David Dick and James DeLoach
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
