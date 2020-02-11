@@ -58,6 +58,14 @@ public final class Constants {
             10);
     }
 
+    public static final class AutoConstants
+    {
+        public static final double kMaxSpeedMetersPerSecond = 1.5;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 1.5;
+        public static final double kRamseteB = 2.0;
+        public static final double kRamseteZeta = .7;
+    }
+
     public static final class ControlConstants
     {
         public static final int RIGHT_JOYSTICK_ID = 0;
