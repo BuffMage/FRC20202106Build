@@ -1,13 +1,14 @@
 package frc.robot.util;
 
 import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.Constants;
 
 public class ControllerInputs
 {
     private ControllerInputs controllerInputs = null;
 
     private Joystick rightJoystick;
-    private Joystick
+    private Joystick leftJoystick;
 
     public ControllerInputs getInstance()
     {
@@ -21,7 +22,9 @@ public class ControllerInputs
 
     private ControllerInputs()
     {
-
+        rightJoystick = new Joystick(Constants.RIGHT_JOYSTICK_ID);
+        leftJoystick = new Joystick(Constants.LEFT_JOYSTICK_ID);
+        
     }
 
     /**
