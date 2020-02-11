@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -7,6 +8,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class DriveSubsystem extends SubsystemBase {
 
   private static DriveSubsystem m_robotDrive = null;
+  private static SpeedControllerGroup m_leftMotors;
+  private static SpeedControllerGroup m_rightMotors;
   
 
   public static DriveSubsystem getInstance()
@@ -19,6 +22,8 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   private DriveSubsystem() {
+
+    //m_leftMotors = new SpeedControllerGroup(speedController, speedControllers)
 
   }
 

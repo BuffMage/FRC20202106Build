@@ -18,7 +18,7 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class BankLeft
 {
-    public static Command getCommand()
+    public static Command getTrajectory()
     {
         DriveSubsystem m_robotDrive = DriveSubsystem.getInstance();
         Trajectory trajectory = null;
