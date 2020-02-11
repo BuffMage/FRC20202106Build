@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.util.Color;
 
 public class ColorHandler
 {
+    //RGB values for target colors
     private final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
     private final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
     private final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
