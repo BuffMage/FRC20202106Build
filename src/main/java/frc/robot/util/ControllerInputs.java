@@ -1,6 +1,7 @@
 package frc.robot.util;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants;
 
 public class ControllerInputs
@@ -9,6 +10,7 @@ public class ControllerInputs
 
     private Joystick rightJoystick;
     private Joystick leftJoystick;
+    private XboxController controller;
 
     public ControllerInputs getInstance()
     {
@@ -24,7 +26,7 @@ public class ControllerInputs
     {
         rightJoystick = new Joystick(Constants.RIGHT_JOYSTICK_ID);
         leftJoystick = new Joystick(Constants.LEFT_JOYSTICK_ID);
-        
+        controller = new XboxController(Constants.CONTROLLER_ID);
     }
 
     /**
@@ -32,7 +34,7 @@ public class ControllerInputs
      */
     public double getRightY()
     {
-        return 0.0;
+        return rightJoystick.getY();
     }
 
     /**
@@ -40,14 +42,25 @@ public class ControllerInputs
      */
     public double getLeftY()
     {
-        return 0.0;
+        return leftJoystick.getY();
     }
 
     /**
      * Returns X axis of controller
      */    
-    public double getTurnShooter()
+    public double getControllerX()
     {
-        return 0.0;
+        return controller.getX();
     }
+
+    /**
+     * Returns Z axis of controller
+     */
+    public double getControllerZ()
+    {
+        return controller.getRawAxis(2);
+    }
+
+    
+
 }
