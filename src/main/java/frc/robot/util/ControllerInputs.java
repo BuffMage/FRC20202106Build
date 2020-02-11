@@ -2,7 +2,6 @@ package frc.robot.util;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.Constants;
 import frc.robot.Constants.ControlConstants;
 
 public class ControllerInputs
@@ -62,6 +61,6 @@ public class ControllerInputs
         return controller.getRawAxis(2);
     }
 
-    
+
 
 }
