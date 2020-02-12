@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import frc.robot.subsystems.LimitSwitchSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -9,39 +10,54 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  */
 public class ResetTurret extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final TurretSubsystem m_turretSubsystem;
+  private TurretSubsystem m_turretSubsystem;
+  private boolean isFinished;
 
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
-  public ResetTurret(TurretSubsystem turretSubsystem) {
-    m_turretSubsystem = turretSubsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(turretSubsystem);
+  public ResetTurret()
+  {
+    m_turretSubsystem = TurretSubsystem.getInstance();
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-      //m_turretSubsystem.resetTurret;
+    isFinished = false;
+      if(LimitSwitchSubsystem.turretSwitch.get())
+      {
+        isFinished = true;
+      }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //
+    if (LimitSwitchSubsystem.turretSwitch.get())
+    {
+      isFinished = true;
+      m_turretSubsystem.turretRotate(0);
+    }
+    else
+    {
+      m_turretSubsystem.turretRotate(.2);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    m_turretSubsystem.turretRotate(0);
+
+    if (interrupted)
+    {
+      System.out.println("Turret did not reset! Use caution");
+    }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return isFinished;
   }
+
+
 }

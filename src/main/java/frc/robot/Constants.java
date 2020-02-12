@@ -27,7 +27,6 @@ public final class Constants {
         public static final int kLeftMotor2Port = 1;
         public static final int kRightMotor1Port = 2;
         public static final int kRightMotor2Port = 3;
-
         
         public static final boolean kLeftEncoderReversed = false;
         public static final boolean kRightEncoderReversed = true;
@@ -71,5 +70,17 @@ public final class Constants {
         public static final int RIGHT_JOYSTICK_ID = 0;
         public static final int LEFT_JOYSTICK_ID = 1;
         public static final int CONTROLLER_ID = 2;
+    }
+
+    public static final class SystemConstants
+    {
+        public static final int kTurretMotorID = 0;
+    }
+
+    public static final class TurretPIDConstants
+    {
+        public static final double kP = 0.0;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
     }
 }

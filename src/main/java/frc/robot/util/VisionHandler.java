@@ -2,9 +2,9 @@ package frc.robot.util;
 
 public class VisionHandler
 {
-    private VisionHandler visionHandler = null;
+    private static VisionHandler visionHandler = null;
 
-    public VisionHandler getInstance()
+    public static VisionHandler getInstance()
     {
         if (visionHandler == null)
         {
