@@ -46,6 +46,6 @@ public class BankLeft
             m_robotDrive
         );
 
-        return ramseteCommand;
+        return ramseteCommand.andThen(() -> m_robotDrive.tankDriveVolts(0, 0));
     }
 }
