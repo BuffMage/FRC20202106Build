@@ -3,6 +3,7 @@ package frc.robot.commands;
 import frc.robot.subsystems.TurretSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
+
 /**
  * An example command that uses an example subsystem.
  */
@@ -24,11 +25,13 @@ public class ResetTurret extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+      //m_turretSubsystem.resetTurret;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    //
   }
 
   // Called once the command ends or is interrupted.
