@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
@@ -26,7 +28,7 @@ public class DriveSubsystem extends SubsystemBase {
   private static Gyro m_gyro;
   private static CANEncoder m_leftEncoder;
   private static CANEncoder m_rightEncoder;
-  
+  private static DifferentialDriveOdometry m_odometry;
 
   public static DriveSubsystem getInstance()
   {
@@ -50,22 +52,36 @@ public class DriveSubsystem extends SubsystemBase {
 
     m_leftEncoder = m_leftMotor1.getEncoder();
     m_rightEncoder = m_rightMotor1.getEncoder();
+    m_leftEncoder.setInverted(DriveConstants.kLeftEncoderReversed);
+    m_rightEncoder.setInverted(DriveConstants.kRightEncoderReversed);
+    m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    m_leftEncoder.setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    m_rightEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    m_rightEncoder.setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+
+    resetEncoders();
+
+    m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
     
   }
 
   @Override
   public void periodic() {
+    m_odometry.update(Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
 
   }
 
+  
+  
   public DifferentialDriveWheelSpeeds getWheelSpeeds()
   {
-    return new DifferentialDriveWheelSpeeds(0, 0);
+    
+    return new DifferentialDriveWheelSpeeds(m_leftEncoder.getVelocity(), m_rightEncoder.getVelocity());
   }
 
   public Pose2d getPose()
   {
-    return new Pose2d();
+    return m_odometry.getPoseMeters();
   }
 
   public void tankDriveVolts(double leftVolts, double rightVolts)
@@ -74,4 +90,47 @@ public class DriveSubsystem extends SubsystemBase {
     m_rightMotors.setVoltage(-rightVolts);
     m_drive.feed();
   }
+
+  public static void resetEncoders()
+  {
+    m_leftEncoder.setPosition(0);
+    m_rightEncoder.setPosition(0);
+  }
+
+  public static double getHeading()
+  {
+    return Math.IEEEremainder(m_gyro.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+  }
+
+  public static void zeroHeading()
+  {
+    m_gyro.reset();
+  }
+
+  public static double getTurnRate()
+  {
+    return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+  }
+  
+  public static double getAverageEncoderDistance()
+  {
+    return (m_rightEncoder.getPosition() + m_leftEncoder.getPosition()) / 2.0;
+  }
+
+  public static void setMaxOutput(double maxOutput)
+  {
+    m_drive.setMaxOutput(maxOutput);
+  }
+
+  public static void arcadeDrive(double fwd, double rot)
+  {
+    m_drive.arcadeDrive(fwd, rot);
+  }
+
+  public static void resetOdometry(Pose2d pose)
+  {
+    resetEncoders();
+    m_odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
+  }
+
 }
