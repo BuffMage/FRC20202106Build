@@ -9,6 +9,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import frc.robot.auto.AutoSelector;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.util.ControllerInputs;
@@ -53,6 +55,10 @@ public class RobotContainer {
   }
 
 
+  public void resetPose()
+  {
+    m_robotDrive.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
+  }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

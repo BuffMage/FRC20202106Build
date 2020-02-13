@@ -40,13 +40,14 @@ public final class Constants {
         public static final double kEncoderDistancePerPulse =
             (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
 
-        public static final boolean kGyroReversed = true;
+        public static boolean kGyroReversed = false;
+        public static boolean kInvertedDrivetrain = false;
 
-        public static final double ksVolts = 0.22;
-        public static final double kvVoltSecondsPerMeter = 1.98;
-        public static final double kaVoltSecondsSquaredPerMeter = 0.2;
+        public static final double ksVolts = 0.09;
+        public static final double kvVoltSecondsPerMeter = 2.88;
+        public static final double kaVoltSecondsSquaredPerMeter = 0.353;
 
-        public static final double kPDriveVel = 8.5;
+        public static final double kPDriveVel = 12.9;
 
         
         public static final DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(

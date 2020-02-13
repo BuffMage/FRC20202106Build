@@ -84,38 +84,38 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void tankDriveVolts(double leftVolts, double rightVolts)
   {
-    m_leftMotors.setVoltage(leftVolts);
-    m_rightMotors.setVoltage(-rightVolts);
+    m_leftMotors.setVoltage(leftVolts * (DriveConstants.kInvertedDrivetrain ? -1.0 : 1.0));
+    m_rightMotors.setVoltage(-rightVolts * (DriveConstants.kInvertedDrivetrain ? -1.0 : 1.0));
     m_drive.feed();
   }
 
-  public static void resetEncoders()
+  public void resetEncoders()
   {
     m_leftEncoder.setPosition(0);
     m_rightEncoder.setPosition(0);
   }
 
-  public static double getHeading()
+  public double getHeading()
   {
     return Math.IEEEremainder(m_gyro.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
-  public static void zeroHeading()
+  public void zeroHeading()
   {
     m_gyro.reset();
   }
 
-  public static double getTurnRate()
+  public double getTurnRate()
   {
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
   
-  public static double getAverageEncoderDistance()
+  public double getAverageEncoderDistance()
   {
     return (m_rightEncoder.getPosition() + m_leftEncoder.getPosition()) / 2.0;
   }
 
-  public static void setMaxOutput(double maxOutput)
+  public void setMaxOutput(double maxOutput)
   {
     m_drive.setMaxOutput(maxOutput);
   }
@@ -125,10 +125,22 @@ public class DriveSubsystem extends SubsystemBase {
     m_drive.arcadeDrive(-fwd, -rot);
   }
 
-  public static void resetOdometry(Pose2d pose)
+  public void resetOdometry(Pose2d pose)
   {
     resetEncoders();
     m_odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
+  }
+
+  public void invertDrivetrain()
+  {
+    DriveConstants.kGyroReversed = true;
+    DriveConstants.kInvertedDrivetrain = true;
+  }
+
+  public void unInvertDrivetrain()
+  {
+    DriveConstants.kGyroReversed = false;
+    DriveConstants.kInvertedDrivetrain = false;
   }
 
 }
