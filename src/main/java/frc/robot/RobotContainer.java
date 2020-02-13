@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.AutoSelector;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.util.ControllerInputs;
@@ -43,6 +44,8 @@ public class RobotContainer {
   public void drive()
   {
     m_robotDrive.arcadeDrive(controller.getControllerLeftY(), controller.getControllerRightX());
+    SmartDashboard.putNumber("Left Encoder", m_robotDrive.getLeftEncoderDistance());
+    SmartDashboard.putNumber("Right Encoder", m_robotDrive.getRightEncoderDistance());
   }
 
   /**

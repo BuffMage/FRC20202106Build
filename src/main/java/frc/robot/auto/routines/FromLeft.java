@@ -14,12 +14,16 @@ public class FromLeft
 
     public static Command getAutoCommand()
     {
-        
+        /*
         SequentialCommandGroup fromLeft = new SequentialCommandGroup(
             new ResetPose(),
             new ParallelCommandGroup(BankLeft.getTrajectory(), 
                 new ResetTurret()),
             new AimTurret()
+        );*/
+        SequentialCommandGroup fromLeft = new SequentialCommandGroup(
+            new ResetPose(),
+            BankLeft.getTrajectory()
         );
         return fromLeft;
     }

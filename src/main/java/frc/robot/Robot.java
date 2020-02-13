@@ -9,14 +9,17 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.util.VisionHandler;
 
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  private VisionHandler visionHandler;
 
 
   @Override
@@ -24,6 +27,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    visionHandler = VisionHandler.getInstance();
   }
 
   @Override
@@ -33,6 +37,9 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    SmartDashboard.putNumber("Target X", visionHandler.getX());
+    SmartDashboard.putNumber("Target Y", visionHandler.getY());
+    SmartDashboard.putNumber("Target Distance", visionHandler.getDistance());
   }
 
   @Override

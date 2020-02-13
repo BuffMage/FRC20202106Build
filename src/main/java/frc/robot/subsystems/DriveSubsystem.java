@@ -143,4 +143,14 @@ public class DriveSubsystem extends SubsystemBase {
     DriveConstants.kInvertedDrivetrain = false;
   }
 
+  public double getLeftEncoderDistance()
+  {
+    return m_leftEncoder.getPosition();
+  }
+
+  public double getRightEncoderDistance()
+  {
+    return m_rightEncoder.getPosition();
+  }
+
 }
