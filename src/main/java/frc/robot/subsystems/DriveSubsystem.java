@@ -26,8 +26,8 @@ public class DriveSubsystem extends SubsystemBase {
   private static CANSparkMax m_rightMotor2;
   private static DifferentialDrive m_drive;
   private static Gyro m_gyro;
-  private static CANEncoder m_leftEncoder;
-  private static CANEncoder m_rightEncoder;
+  //private static CANEncoder m_leftEncoder;
+  //private static CANEncoder m_rightEncoder;
   private static DifferentialDriveOdometry m_odometry;
 
   public static DriveSubsystem getInstance()
@@ -49,7 +49,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_rightMotors = new SpeedControllerGroup(m_rightMotor1, m_rightMotor2);
     m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
     m_gyro = new ADXRS450_Gyro();
-
+/*
     m_leftEncoder = m_leftMotor1.getEncoder();
     m_rightEncoder = m_rightMotor1.getEncoder();
     m_leftEncoder.setInverted(DriveConstants.kLeftEncoderReversed);
@@ -60,14 +60,14 @@ public class DriveSubsystem extends SubsystemBase {
     m_rightEncoder.setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
 
     resetEncoders();
-
+*/
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
     
   }
 
   @Override
   public void periodic() {
-    m_odometry.update(Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
+    //m_odometry.update(Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
 
   }
 
@@ -75,8 +75,8 @@ public class DriveSubsystem extends SubsystemBase {
   
   public DifferentialDriveWheelSpeeds getWheelSpeeds()
   {
-    
-    return new DifferentialDriveWheelSpeeds(m_leftEncoder.getVelocity(), m_rightEncoder.getVelocity());
+    return new DifferentialDriveWheelSpeeds(0,0);
+    //return new DifferentialDriveWheelSpeeds(m_leftEncoder.getVelocity(), m_rightEncoder.getVelocity());
   }
 
   public Pose2d getPose()
@@ -93,8 +93,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   public static void resetEncoders()
   {
-    m_leftEncoder.setPosition(0);
-    m_rightEncoder.setPosition(0);
+    //m_leftEncoder.setPosition(0);
+    //m_rightEncoder.setPosition(0);
   }
 
   public static double getHeading()
@@ -114,7 +114,8 @@ public class DriveSubsystem extends SubsystemBase {
   
   public static double getAverageEncoderDistance()
   {
-    return (m_rightEncoder.getPosition() + m_leftEncoder.getPosition()) / 2.0;
+    return 0;
+    //return (m_rightEncoder.getPosition() + m_leftEncoder.getPosition()) / 2.0;
   }
 
   public static void setMaxOutput(double maxOutput)
@@ -122,9 +123,9 @@ public class DriveSubsystem extends SubsystemBase {
     m_drive.setMaxOutput(maxOutput);
   }
 
-  public static void arcadeDrive(double fwd, double rot)
+  public void arcadeDrive(double fwd, double rot)
   {
-    m_drive.arcadeDrive(fwd, rot);
+    m_drive.arcadeDrive(-fwd, -rot);
   }
 
   public static void resetOdometry(Pose2d pose)

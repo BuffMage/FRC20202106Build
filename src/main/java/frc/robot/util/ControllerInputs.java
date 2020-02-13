@@ -6,13 +6,13 @@ import frc.robot.Constants.ControlConstants;
 
 public class ControllerInputs
 {
-    private ControllerInputs controllerInputs = null;
+    private static ControllerInputs controllerInputs = null;
 
     private Joystick rightJoystick;
     private Joystick leftJoystick;
     private XboxController controller;
 
-    public ControllerInputs getInstance()
+    public static ControllerInputs getInstance()
     {
         if(controllerInputs == null)
         {
@@ -48,15 +48,15 @@ public class ControllerInputs
     /**
      * Returns X axis of controller
      */    
-    public double getControllerX()
+    public double getControllerLeftY()
     {
-        return controller.getX();
+        return -controller.getRawAxis(1);
     }
 
     /**
      * Returns Z axis of controller
      */
-    public double getControllerZ()
+    public double getControllerRightX()
     {
         return controller.getRawAxis(2);
     }

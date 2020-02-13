@@ -10,6 +10,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.auto.AutoSelector;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.util.ControllerInputs;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -22,14 +24,23 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
 
+  private static ControllerInputs controller;
+  private static DriveSubsystem m_robotDrive;
 
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    m_robotDrive = DriveSubsystem.getInstance();
+    controller = ControllerInputs.getInstance();
     // Configure the button bindings
     configureButtonBindings();
+  }
+
+  public void drive()
+  {
+    m_robotDrive.arcadeDrive(controller.getControllerLeftY(), controller.getControllerRightX());
   }
 
   /**
