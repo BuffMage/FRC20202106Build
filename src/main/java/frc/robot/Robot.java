@@ -10,6 +10,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycle;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,6 +28,7 @@ public class Robot extends TimedRobot {
   private DutyCycle servoInfo;
   private double theta;
   private double thetaP;
+  private Joystick joy;
 
 
   @Override
@@ -36,9 +38,11 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     visionHandler = VisionHandler.getInstance();
     servo = new Servo(0);
+    servo.setBounds(1.72, 1.52, 1.5, 1.48, 1.28);
     servoInfo = new DutyCycle(new DigitalInput(0));
     theta = (360-1)-((((1000 * servoInfo.getOutput()) - 27) * 360)/(971 - 27 + 1));
     thetaP = theta;
+    joy = new Joystick(3);
   }
 
   @Override
@@ -94,7 +98,19 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     m_robotContainer.drive();
-    servo.set(.6);
+
+    if (joy.getRawButton(1))
+    {
+      servo.set(.4);
+    }
+    else if (joy.getRawButton(3))
+    {
+      servo.set(.6);
+    }
+    else
+    {
+      servo.set(.5);
+    }
   }
 
   @Override
