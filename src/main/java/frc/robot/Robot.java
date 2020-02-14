@@ -8,6 +8,9 @@
 //Created by David Dick and James DeLoach
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DutyCycle;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,6 +23,10 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   private VisionHandler visionHandler;
+  private Servo servo;
+  private DutyCycle servoInfo;
+  private double theta;
+  private double thetaP;
 
 
   @Override
@@ -28,6 +35,10 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     visionHandler = VisionHandler.getInstance();
+    servo = new Servo(0);
+    servoInfo = new DutyCycle(new DigitalInput(0));
+    theta = (360-1)-((((1000 * servoInfo.getOutput()) - 27) * 360)/(971 - 27 + 1));
+    thetaP = theta;
   }
 
   @Override
@@ -40,6 +51,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Target X", visionHandler.getX());
     SmartDashboard.putNumber("Target Y", visionHandler.getY());
     SmartDashboard.putNumber("Target Distance", visionHandler.getDistance());
+    SmartDashboard.putNumber("Servo Duty Cycle", servoInfo.getOutput());
+    SmartDashboard.putNumber("Refresh rate", servoInfo.getFrequency());
+    theta = (360-1)-((((1000 * servoInfo.getOutput()) - 27) * 360)/(971 - 27 + 1));
+    SmartDashboard.putNumber("Angle", theta);
   }
 
   @Override
@@ -79,6 +94,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     m_robotContainer.drive();
+    servo.set(.6);
   }
 
   @Override
