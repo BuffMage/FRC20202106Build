@@ -8,14 +8,12 @@
 //Created by David Dick and James DeLoach
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DutyCycle;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.util.ServoHandler;
 import frc.robot.util.VisionHandler;
 
 
@@ -24,10 +22,7 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   private VisionHandler visionHandler;
-  private Servo servo;
-  private DutyCycle servoInfo;
-  private double theta;
-  private double thetaP;
+  private ServoHandler servoHandler;
   private Joystick joy;
 
 
@@ -37,11 +32,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     visionHandler = VisionHandler.getInstance();
-    servo = new Servo(0);
-    servo.setBounds(1.72, 1.52, 1.5, 1.48, 1.28);
-    servoInfo = new DutyCycle(new DigitalInput(0));
-    theta = (360-1)-((((1000 * servoInfo.getOutput()) - 27) * 360)/(971 - 27 + 1));
-    thetaP = theta;
+    servoHandler = ServoHandler.getInstance();
     joy = new Joystick(3);
   }
 
@@ -52,13 +43,11 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    servoHandler.run();
     SmartDashboard.putNumber("Target X", visionHandler.getX());
     SmartDashboard.putNumber("Target Y", visionHandler.getY());
     SmartDashboard.putNumber("Target Distance", visionHandler.getDistance());
-    SmartDashboard.putNumber("Servo Duty Cycle", servoInfo.getOutput());
-    SmartDashboard.putNumber("Refresh rate", servoInfo.getFrequency());
-    theta = (360-1)-((((1000 * servoInfo.getOutput()) - 27) * 360)/(971 - 27 + 1));
-    SmartDashboard.putNumber("Angle", theta);
+    SmartDashboard.putNumber("Servo Angle", servoHandler.getAngle());
   }
 
   @Override
@@ -101,15 +90,15 @@ public class Robot extends TimedRobot {
 
     if (joy.getRawButton(1))
     {
-      servo.set(.4);
+      servoHandler.setSpeed(.2);
     }
     else if (joy.getRawButton(3))
     {
-      servo.set(.6);
+      servoHandler.setSpeed(-.2);
     }
     else
     {
-      servo.set(.5);
+      servoHandler.setSpeed(0);
     }
   }
 
