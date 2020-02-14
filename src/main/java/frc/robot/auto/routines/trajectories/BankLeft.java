@@ -22,14 +22,14 @@ public class BankLeft
     {
         DriveSubsystem m_robotDrive = DriveSubsystem.getInstance();
         Trajectory trajectory = null;
-        String trajectoryJSON = "paths/BankLeft.wpilib.json";
+        String trajectoryJSON = "paths/BankRight.wpilib.json";
         try {
             Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
             trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
         } catch (IOException ex) {
             DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
         }
-        trajectory = trajectory.relativeTo(trajectory.getInitialPose());
+        //trajectory = trajectory.relativeTo(trajectory.getInitialPose());
         
         RamseteCommand ramseteCommand = new RamseteCommand(
             trajectory,

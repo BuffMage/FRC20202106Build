@@ -46,6 +46,9 @@ public class RobotContainer {
     m_robotDrive.arcadeDrive(controller.getControllerLeftY(), controller.getControllerRightX());
     SmartDashboard.putNumber("Left Encoder", m_robotDrive.getLeftEncoderDistance());
     SmartDashboard.putNumber("Right Encoder", m_robotDrive.getRightEncoderDistance());
+    SmartDashboard.putNumber("Heading", m_robotDrive.getHeading());
+    SmartDashboard.putNumber("Left Vel", m_robotDrive.getWheelSpeeds().leftMetersPerSecond);
+    SmartDashboard.putNumber("Right Vel", m_robotDrive.getWheelSpeeds().rightMetersPerSecond);
   }
 
   /**

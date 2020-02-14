@@ -45,6 +45,11 @@ public class DriveSubsystem extends SubsystemBase {
     m_rightMotor1 = new CANSparkMax(DriveConstants.kRightMotor1Port, MotorType.kBrushless);
     m_rightMotor2 = new CANSparkMax(DriveConstants.kRightMotor2Port, MotorType.kBrushless);
 
+    m_leftMotor1.restoreFactoryDefaults();
+    m_leftMotor2.restoreFactoryDefaults();
+    m_rightMotor1.restoreFactoryDefaults();
+    m_rightMotor2.restoreFactoryDefaults();
+
     m_leftMotors = new SpeedControllerGroup(m_leftMotor1, m_leftMotor2);
     m_rightMotors = new SpeedControllerGroup(m_rightMotor1, m_rightMotor2);
     m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
@@ -52,10 +57,12 @@ public class DriveSubsystem extends SubsystemBase {
 
     m_leftEncoder = m_leftMotor1.getEncoder();
     m_rightEncoder = m_rightMotor1.getEncoder();
-    m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
-    m_leftEncoder.setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
-    m_rightEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
-    m_rightEncoder.setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+
+
+    m_leftEncoder.setPositionConversionFactor(1/(11.21 * .1524 * Math.PI * 4));
+    m_leftEncoder.setVelocityConversionFactor(((1/11.21) * .1524 * Math.PI)/60);
+    m_rightEncoder.setPositionConversionFactor(1/(11.21 * .1524 * Math.PI * 4));
+    m_rightEncoder.setVelocityConversionFactor(((1/11.21) * .1524 * Math.PI)/60);
 
     resetEncoders();
 
@@ -65,7 +72,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    m_odometry.update(Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getPosition(), m_rightEncoder.getPosition());//Put a negative on one of these since we cant invert hall effect encoders.
+    m_odometry.update(Rotation2d.fromDegrees(getHeading()), -m_leftEncoder.getPosition(), m_rightEncoder.getPosition());//Put a negative on one of these since we cant invert hall effect encoders.
 
   }
 
@@ -74,7 +81,7 @@ public class DriveSubsystem extends SubsystemBase {
   public DifferentialDriveWheelSpeeds getWheelSpeeds()
   {
     
-    return new DifferentialDriveWheelSpeeds(m_leftEncoder.getVelocity(), m_rightEncoder.getVelocity());
+    return new DifferentialDriveWheelSpeeds(-m_leftEncoder.getVelocity(), m_rightEncoder.getVelocity());
   }
 
   public Pose2d getPose()
@@ -84,8 +91,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void tankDriveVolts(double leftVolts, double rightVolts)
   {
-    m_leftMotors.setVoltage(leftVolts * (DriveConstants.kInvertedDrivetrain ? -1.0 : 1.0));
-    m_rightMotors.setVoltage(-rightVolts * (DriveConstants.kInvertedDrivetrain ? -1.0 : 1.0));
+    m_leftMotors.setVoltage(-leftVolts * (DriveConstants.kInvertedDrivetrain ? -1.0 : 1.0));
+    m_rightMotors.setVoltage(rightVolts * (DriveConstants.kInvertedDrivetrain ? -1.0 : 1.0));
     m_drive.feed();
   }
 

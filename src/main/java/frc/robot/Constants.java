@@ -23,7 +23,7 @@ public final class Constants {
 
     public static final class DriveConstants
     {
-        public static final int kLeftMotor1Port = 2;
+        public static final int kLeftMotor1Port = 6;
         public static final int kLeftMotor2Port = 5;
         public static final int kRightMotor1Port = 1;
         public static final int kRightMotor2Port = 3;
@@ -40,14 +40,14 @@ public final class Constants {
         public static final double kEncoderDistancePerPulse =
             (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
 
-        public static boolean kGyroReversed = false;
+        public static boolean kGyroReversed = true;
         public static boolean kInvertedDrivetrain = false;
 
         public static final double ksVolts = 0.09;
         public static final double kvVoltSecondsPerMeter = 2.88;
         public static final double kaVoltSecondsSquaredPerMeter = 0.353;
 
-        public static final double kPDriveVel = 12.9;
+        public static final double kPDriveVel = 2.5;
 
         
         public static final DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
@@ -60,8 +60,8 @@ public final class Constants {
 
     public static final class AutoConstants
     {
-        public static final double kMaxSpeedMetersPerSecond = 1.5;
-        public static final double kMaxAccelerationMetersPerSecondSquared = 1.5;
+        public static final double kMaxSpeedMetersPerSecond = 3;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 3;
         public static final double kRamseteB = 2.0;
         public static final double kRamseteZeta = .7;
     }
