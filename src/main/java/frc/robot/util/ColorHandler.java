@@ -17,14 +17,14 @@ public class ColorHandler
     private final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
     private final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
-    private ColorHandler colorHandler = null;
-    private I2C.Port i2cPort;
-    private ColorSensorV3 m_colorSensor;
-    private ColorMatch m_colorMatcher;
+    private static ColorHandler colorHandler = null;
+    private static I2C.Port i2cPort;
+    private static ColorSensorV3 m_colorSensor;
+    private static ColorMatch m_colorMatcher;
 
     
     
-    public ColorHandler getInstance()
+    public static ColorHandler getInstance()
     {
         if(colorHandler == null)
         {
