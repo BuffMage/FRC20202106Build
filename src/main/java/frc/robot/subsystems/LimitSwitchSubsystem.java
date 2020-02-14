@@ -5,10 +5,10 @@ import frc.robot.util.LimitSwitch;
 
 public class LimitSwitchSubsystem extends SubsystemBase
 {
-    private LimitSwitchSubsystem limitSwitchSubsystem = null;
+    private static LimitSwitchSubsystem limitSwitchSubsystem = null;
     public static LimitSwitch turretSwitch;
 
-    public LimitSwitchSubsystem getInstance()
+    public static LimitSwitchSubsystem getInstance()
     {
         if (limitSwitchSubsystem == null)
         {
