@@ -9,26 +9,21 @@ public class ServoHandler
     private static ServoHandler servoHandler = null;
     private static Servo hoodServo;
     private static DutyCycle positionFeedback;
-    private static double currAngle;
-    private static double actualAngle;
-    private static double theta;
-    private static double thetaP;
-    private static double unitsPerRev;//Degrees in a circle
-    private static double scaleFactor;
+    private static int angle;
+    private static int theta;
+    private static int thetaP;
+    private static int unitsPerRev;//Degrees in a circle
+    private static int scaleFactor;
     //Max and min duty cycles of the pulses
-    private static double minDC;
-    private static double maxDC;
+    private static int minDC;
+    private static int maxDC;
 
-    private static double offset;
-    private static double rotations;
+    private static int offset;
+    private static int rotations;
 
-    private static double prevSpeed;
-    private static double currSpeed;
+    private static int q2min;
+    private static int q3max;
 
-    private static double prevAngle;
-
-    private static boolean flag;
-    private static int cycles;
 
     public static ServoHandler getInstance()
     {
@@ -41,11 +36,10 @@ public class ServoHandler
 
     private ServoHandler()
     {
-        currAngle = 0;
-        actualAngle = 0;
-        prevAngle = 0;
-        prevSpeed = 0;
-        currSpeed = 0;
+        rotations = 0;
+        q2min = unitsPerRev / 4;
+        q3max = q2min * 3;
+        angle = 0;
         offset = 0;
         minDC = 27;
         maxDC = 971;
@@ -61,10 +55,6 @@ public class ServoHandler
 
     public void run()
     {
-        prevAngle = actualAngle;
-        prevSpeed = currSpeed;
-        currSpeed = hoodServo.getSpeed();
-        thetaP = theta;
         theta = getRawTheta();
         if (theta < 0)
         {
@@ -75,58 +65,43 @@ public class ServoHandler
             theta = unitsPerRev - 1;
         }
         rotations += getFixedTheta(thetaP, theta);
-        /*
-        currAngle = theta + rotations;
-        if (getRate() > 180)
+
+        if (rotations >= 0)
         {
-            rotations -= 360;
+            angle = (rotations * unitsPerRev) + theta;
         }
-        else if (getRate() < -180)
+        else if (rotations < 0)
         {
-            rotations += 360;
-        }*/
-        actualAngle = theta + rotations;
-        System.out.println(theta);
+            angle = ((rotations + 1) * unitsPerRev) - (unitsPerRev - theta);
+        }
+        thetaP = theta;
     }
 
-    private boolean hasChangedDirection()
+    private int getRawTheta()
     {
-        if (currSpeed > 0 && prevSpeed < 0)
-        {
-            return true;
-        }
-        else if (currSpeed < 0 && prevSpeed > 0)
-        {
-            return true;
-        }
-        return false;
+        Double d = (unitsPerRev-1)-((((scaleFactor * positionFeedback.getOutput()) - minDC) * unitsPerRev)/(maxDC - minDC + 1));
+        return d.intValue();
     }
 
-    private double getRawTheta()
+    private int getFixedTheta(double tP, double t)
     {
-        return (unitsPerRev-1)-((((scaleFactor * positionFeedback.getOutput()) - minDC) * unitsPerRev)/(maxDC - minDC + 1));
-    }
-
-    private double getFixedTheta(double tP, double t)
-    {
-        //Maybe set to getRate instead?
-        if (hoodServo.getSpeed() > 0 && (t < 180 && tP > 180))
+        if (theta < q2min && thetaP > q3max)
         {
-            return 360;
+            return 1;
         }
-        else if (hoodServo.getSpeed() < 0 && (t > 180 && tP < 180))
+        else if (thetaP < q2min && theta > q3max)
         {
-            return -360;
+            return -1;
         }
         return 0;
     }
 
-    public double getAngle()
+    public int getAngle()
     {
-        return actualAngle - offset;
+        return angle - offset;
     }
 
-    public void setOffset(double offset)
+    public void setOffset(int offset)
     {
         ServoHandler.offset = offset;
     }
@@ -142,10 +117,5 @@ public class ServoHandler
             speed = -1;
         }
         hoodServo.setSpeed(speed);
-    }
-
-    public double getRate()
-    {
-        return ((currAngle - prevAngle) / .02);
     }
 }

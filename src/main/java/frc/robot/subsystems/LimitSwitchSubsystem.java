@@ -7,6 +7,7 @@ public class LimitSwitchSubsystem extends SubsystemBase
 {
     private static LimitSwitchSubsystem limitSwitchSubsystem = null;
     public static LimitSwitch turretSwitch;
+    public static LimitSwitch hoodSwitch;
 
     public static LimitSwitchSubsystem getInstance()
     {
@@ -20,11 +21,13 @@ public class LimitSwitchSubsystem extends SubsystemBase
     private LimitSwitchSubsystem()
     {
         turretSwitch = new LimitSwitch(0);
+        hoodSwitch = new LimitSwitch(0);
     }
 
     @Override
     public void periodic()
     {
         turretSwitch.update();
+        hoodSwitch.update();
     }
 }
