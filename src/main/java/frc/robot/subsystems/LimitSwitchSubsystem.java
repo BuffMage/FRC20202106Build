@@ -20,8 +20,8 @@ public class LimitSwitchSubsystem extends SubsystemBase
 
     private LimitSwitchSubsystem()
     {
-        turretSwitch = new LimitSwitch(0);
-        hoodSwitch = new LimitSwitch(0);
+        turretSwitch = new LimitSwitch(1);
+        hoodSwitch = new LimitSwitch(2);
     }
 
     @Override

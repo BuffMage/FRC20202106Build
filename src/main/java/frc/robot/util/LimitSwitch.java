@@ -41,6 +41,6 @@ public class LimitSwitch
 
     public boolean get()
     {
-        return current;
+        return !current;
     }
 }

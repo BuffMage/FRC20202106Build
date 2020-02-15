@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.AutoSelector;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.LimitSwitchSubsystem;
 import frc.robot.util.ControllerInputs;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -29,6 +30,7 @@ public class RobotContainer {
 
   private static ControllerInputs controller;
   private static DriveSubsystem m_robotDrive;
+  private static LimitSwitchSubsystem limitSwitchSubsystem;
 
 
   /**
@@ -37,6 +39,7 @@ public class RobotContainer {
   public RobotContainer() {
     m_robotDrive = DriveSubsystem.getInstance();
     controller = ControllerInputs.getInstance();
+    limitSwitchSubsystem = LimitSwitchSubsystem.getInstance();
     // Configure the button bindings
     configureButtonBindings();
   }

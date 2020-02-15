@@ -37,9 +37,14 @@ public class ResetHood extends CommandBase
     public void end(boolean interrupted)
     {
         servoHandler.setSpeed(0);
+        servoHandler.setOffset(servoHandler.getAngle());
         if (interrupted)
         {
             System.out.println("Hood did not reset! Use caution");
+        }
+        else
+        {
+            System.out.println("Hood reset");
         }
     }
 

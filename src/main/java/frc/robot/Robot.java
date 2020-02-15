@@ -16,12 +16,14 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.ResetHood;
 import frc.robot.util.ServoHandler;
 import frc.robot.util.VisionHandler;
 
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
+  private Command m_hoodTestCommand;
 
   private RobotContainer m_robotContainer;
   private VisionHandler visionHandler;
@@ -69,7 +71,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Target Y", visionHandler.getY());
     SmartDashboard.putNumber("Target Distance", visionHandler.getDistance());
     SmartDashboard.putNumber("Servo Angle", servoHandler.getAngle());
-    servoHandler.tempPID(SmartDashboard.getNumber("Target Angle", 0));
+    //servoHandler.tempPID(SmartDashboard.getNumber("Target Angle", 0));
   }
 
   @Override
@@ -101,6 +103,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    m_hoodTestCommand = new ResetHood();
+    m_hoodTestCommand.schedule();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -124,19 +128,6 @@ public class Robot extends TimedRobot {
     {
       //servoHandler.setSpeed(0);
       shooter1.set(ControlMode.PercentOutput, 0);
-    }
-
-    if (joy.getRawButton(6))
-    {
-      servoHandler.setSpeed(.2);
-    }
-    else if (joy.getRawButton(7))
-    {
-      servoHandler.setSpeed(-.2);
-    }
-    else
-    {
-      servoHandler.setSpeed(0);
     }
 
     if (joy.getRawButton(2))
