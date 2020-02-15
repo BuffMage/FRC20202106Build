@@ -37,13 +37,13 @@ public class ServoHandler
     private ServoHandler()
     {
         rotations = 0;
+        unitsPerRev = 360;
         q2min = unitsPerRev / 4;
         q3max = q2min * 3;
         angle = 0;
         offset = 0;
         minDC = 27;
         maxDC = 971;
-        unitsPerRev = 360;
         scaleFactor = 1000;
         hoodServo = new Servo(0);
         positionFeedback = new DutyCycle(new DigitalInput(0));
@@ -55,6 +55,7 @@ public class ServoHandler
 
     public void run()
     {
+        thetaP = theta;
         theta = getRawTheta();
         if (theta < 0)
         {
@@ -64,7 +65,7 @@ public class ServoHandler
         {
             theta = unitsPerRev - 1;
         }
-        rotations += getFixedTheta(thetaP, theta);
+        rotations = rotations + getFixedTheta(thetaP, theta);
 
         if (rotations >= 0)
         {
@@ -74,7 +75,6 @@ public class ServoHandler
         {
             angle = ((rotations + 1) * unitsPerRev) - (unitsPerRev - theta);
         }
-        thetaP = theta;
     }
 
     private int getRawTheta()
@@ -83,13 +83,13 @@ public class ServoHandler
         return d.intValue();
     }
 
-    private int getFixedTheta(double tP, double t)
+    private int getFixedTheta(int tP, int t)
     {
-        if (theta < q2min && thetaP > q3max)
+        if (t < q2min && tP > q3max)
         {
             return 1;
         }
-        else if (thetaP < q2min && theta > q3max)
+        else if (tP < q2min && t > q3max)
         {
             return -1;
         }
@@ -117,5 +117,37 @@ public class ServoHandler
             speed = -1;
         }
         hoodServo.setSpeed(speed);
+    }
+
+    public void tempPID(double setAngle)
+    {
+        double kP = .01;
+        double pidOffset = 0;
+        double errorAngle = setAngle - angle;
+        double output = errorAngle * kP;
+
+        if (output > .8)
+        {
+            output = .8;
+        }
+        else if (output < -.8)
+        {
+            output = -.8;
+        }
+
+        if (errorAngle > 0)
+        {
+            pidOffset = .1;
+        }
+        else if (errorAngle < 0)
+        {
+            pidOffset = -.1;
+        }
+        else
+        {
+            pidOffset = 0;
+        }
+        setSpeed(output + pidOffset);
+
     }
 }

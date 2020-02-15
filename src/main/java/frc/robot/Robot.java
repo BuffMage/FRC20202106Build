@@ -8,6 +8,9 @@
 //Created by David Dick and James DeLoach
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,16 +27,34 @@ public class Robot extends TimedRobot {
   private VisionHandler visionHandler;
   private ServoHandler servoHandler;
   private Joystick joy;
+  private TalonSRX shooter1;
+  private TalonSRX shooter2;
+  private TalonSRX conveyor;
+  private TalonSRX kicker;
+  private TalonSRX turret;
 
 
   @Override
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+    turret = new TalonSRX(4);
+    conveyor = new TalonSRX(2);
+    kicker = new TalonSRX(0);
+    shooter1 = new TalonSRX(1);
+    shooter2 = new TalonSRX(5);
+    turret.configFactoryDefault();
+    conveyor.configFactoryDefault();
+    kicker.configFactoryDefault();
+    shooter1.configFactoryDefault();
+    shooter2.configFactoryDefault();
+    shooter2.follow(shooter1);
     m_robotContainer = new RobotContainer();
     visionHandler = VisionHandler.getInstance();
     servoHandler = ServoHandler.getInstance();
     joy = new Joystick(3);
+    SmartDashboard.putNumber("Target Angle", 0);
+
   }
 
   @Override
@@ -48,6 +69,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Target Y", visionHandler.getY());
     SmartDashboard.putNumber("Target Distance", visionHandler.getDistance());
     SmartDashboard.putNumber("Servo Angle", servoHandler.getAngle());
+    servoHandler.tempPID(SmartDashboard.getNumber("Target Angle", 0));
   }
 
   @Override
@@ -86,19 +108,65 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    m_robotContainer.drive();
+    //m_robotContainer.drive();
 
     if (joy.getRawButton(1))
     {
-      servoHandler.setSpeed(.2);
+      shooter1.set(ControlMode.PercentOutput, 1);
+      //servoHandler.setSpeed(.2);
     }
     else if (joy.getRawButton(3))
+    {
+      //servoHandler.setSpeed(-.2);
+      shooter1.set(ControlMode.PercentOutput, -1);
+    }
+    else
+    {
+      //servoHandler.setSpeed(0);
+      shooter1.set(ControlMode.PercentOutput, 0);
+    }
+
+    if (joy.getRawButton(6))
+    {
+      servoHandler.setSpeed(.2);
+    }
+    else if (joy.getRawButton(7))
     {
       servoHandler.setSpeed(-.2);
     }
     else
     {
       servoHandler.setSpeed(0);
+    }
+
+    if (joy.getRawButton(2))
+    {
+      kicker.set(ControlMode.PercentOutput, 1);
+    }
+    else
+    {
+      kicker.set(ControlMode.PercentOutput, 0);
+    }
+    if (joy.getRawButton(4))
+    {
+      conveyor.set(ControlMode.PercentOutput, -.5);
+    }
+    else
+    {
+      conveyor.set(ControlMode.PercentOutput, 0);
+    }
+
+    if (joy.getRawButton(8))
+    {
+      turret.set(ControlMode.PercentOutput, .25);
+    }
+    else if (joy.getRawButton(9))
+    {
+      turret.set(ControlMode.PercentOutput, -.25);
+    }
+    else
+    {
+      turret.set(ControlMode.PercentOutput, 0);
     }
   }
 
