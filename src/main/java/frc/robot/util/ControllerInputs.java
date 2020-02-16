@@ -61,6 +61,19 @@ public class ControllerInputs
         return controller.getRawAxis(2);
     }
 
+    public XboxController getController()
+    {
+        return controller;
+    }
 
+    public Joystick getLeftJoystick()
+    {
+        return leftJoystick;
+    }
+
+    public Joystick getRightJoystick()
+    {
+        return rightJoystick;
+    }
 
 }

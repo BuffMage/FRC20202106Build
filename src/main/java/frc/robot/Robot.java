@@ -8,17 +8,10 @@
 //Created by David Dick and James DeLoach
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.ResetHood;
-import frc.robot.util.ServoHandler;
-import frc.robot.util.VisionHandler;
 
 
 public class Robot extends TimedRobot {
@@ -26,37 +19,13 @@ public class Robot extends TimedRobot {
   private Command m_hoodTestCommand;
 
   private RobotContainer m_robotContainer;
-  private VisionHandler visionHandler;
-  private ServoHandler servoHandler;
-  private Joystick joy;
-  private TalonSRX shooter1;
-  private TalonSRX shooter2;
-  private TalonSRX conveyor;
-  private TalonSRX kicker;
-  private TalonSRX turret;
 
 
   @Override
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    turret = new TalonSRX(4);
-    conveyor = new TalonSRX(2);
-    kicker = new TalonSRX(0);
-    shooter1 = new TalonSRX(1);
-    shooter2 = new TalonSRX(5);
-    turret.configFactoryDefault();
-    conveyor.configFactoryDefault();
-    kicker.configFactoryDefault();
-    shooter1.configFactoryDefault();
-    shooter2.configFactoryDefault();
-    shooter2.follow(shooter1);
     m_robotContainer = new RobotContainer();
-    visionHandler = VisionHandler.getInstance();
-    servoHandler = ServoHandler.getInstance();
-    joy = new Joystick(3);
-    SmartDashboard.putNumber("Target Angle", 0);
-
   }
 
   @Override
@@ -66,12 +35,6 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    servoHandler.run();
-    SmartDashboard.putNumber("Target X", visionHandler.getX());
-    SmartDashboard.putNumber("Target Y", visionHandler.getY());
-    SmartDashboard.putNumber("Target Distance", visionHandler.getDistance());
-    SmartDashboard.putNumber("Servo Angle", servoHandler.getAngle());
-    //servoHandler.tempPID(SmartDashboard.getNumber("Target Angle", 0));
   }
 
   @Override
@@ -112,53 +75,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    //m_robotContainer.drive();
-
-    if (joy.getRawButton(1))
-    {
-      shooter1.set(ControlMode.PercentOutput, 1);
-      //servoHandler.setSpeed(.2);
-    }
-    else if (joy.getRawButton(3))
-    {
-      //servoHandler.setSpeed(-.2);
-      shooter1.set(ControlMode.PercentOutput, -1);
-    }
-    else
-    {
-      //servoHandler.setSpeed(0);
-      shooter1.set(ControlMode.PercentOutput, 0);
-    }
-
-    if (joy.getRawButton(2))
-    {
-      kicker.set(ControlMode.PercentOutput, 1);
-    }
-    else
-    {
-      kicker.set(ControlMode.PercentOutput, 0);
-    }
-    if (joy.getRawButton(4))
-    {
-      conveyor.set(ControlMode.PercentOutput, -.5);
-    }
-    else
-    {
-      conveyor.set(ControlMode.PercentOutput, 0);
-    }
-
-    if (joy.getRawButton(8))
-    {
-      turret.set(ControlMode.PercentOutput, .25);
-    }
-    else if (joy.getRawButton(9))
-    {
-      turret.set(ControlMode.PercentOutput, -.25);
-    }
-    else
-    {
-      turret.set(ControlMode.PercentOutput, 0);
-    }
+    m_robotContainer.drive();
   }
 
   @Override

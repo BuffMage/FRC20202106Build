@@ -75,7 +75,23 @@ public final class Constants {
 
     public static final class SystemConstants
     {
+        //Talon SRX constants
         public static final int kTurretMotorID = 0;
+        public static final int kKickerMotorID = 1;
+        public static final int kConveyorMotorID = 2;
+        public static final int kShooterMasterID = 3;
+        public static final int kShooterFollowerID = 4;
+        public static final int kIntakeMotorID = 5;
+        //Spark MAX constants
+        public static final int kWinchMasterID = 6;
+        public static final int kWinchFollowerID = 7;
+        //Pneumatics and servo constants
+        public static final int kServoPWMPort = 0;
+        public static final int kServoDIOPort = 0;
+        public static final int kIntakeSolenoidForward = 0;
+        public static final int kIntakeSolenoidReverse = 1;
+        public static final int kClimbSolenoidForward = 2;
+        public static final int kClimbSolenoidReverse = 3;
     }
 
     public static final class TurretPIDConstants
@@ -83,6 +99,18 @@ public final class Constants {
         public static final double kP = 0.0;
         public static final double kI = 0.0;
         public static final double kD = 0.0;
+    }
+
+    public static final class CannonPIDConstants
+    {
+        public static final int kPIDSlotX = 0;
+        public static final double kF = 0;
+        public static final double kP = 0;
+        public static final double kI = 0;
+        public static final double kD = 0;
+        public static final int kTimeout = 30;
+
+        public static final int kCannonRestingRPM = 5600;
     }
 
     public static final class VisionConstants

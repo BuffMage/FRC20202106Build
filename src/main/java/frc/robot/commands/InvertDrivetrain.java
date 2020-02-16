@@ -24,12 +24,6 @@ public class InvertDrivetrain extends CommandBase
     }
 
     @Override
-    public void execute()
-    {
-
-    }
-
-    @Override
     public void end(boolean interrupted)
     {
         System.out.println("Inverted Drivetrain");

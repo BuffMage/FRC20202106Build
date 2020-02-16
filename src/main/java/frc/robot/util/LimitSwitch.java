@@ -23,7 +23,7 @@ public class LimitSwitch
 
     public boolean whenPressed()
     {
-        if (previous != current && current == true)
+        if (previous != current && current == false)
         {
             return true;
         }
@@ -32,7 +32,7 @@ public class LimitSwitch
 
     public boolean whenReleased()
     {
-        if (previous != current && current == false)
+        if (previous != current && current == true)
         {
             return true;
         }
