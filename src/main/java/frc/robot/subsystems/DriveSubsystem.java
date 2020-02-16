@@ -59,10 +59,10 @@ public class DriveSubsystem extends SubsystemBase {
     m_rightEncoder = m_rightMotor1.getEncoder();
 
 
-    m_leftEncoder.setPositionConversionFactor(1/(11.21 * .1524 * Math.PI * 4));
-    m_leftEncoder.setVelocityConversionFactor(((1/11.21) * .1524 * Math.PI)/60);
-    m_rightEncoder.setPositionConversionFactor(1/(11.21 * .1524 * Math.PI * 4));
-    m_rightEncoder.setVelocityConversionFactor(((1/11.21) * .1524 * Math.PI)/60);
+    m_leftEncoder.setPositionConversionFactor(DriveConstants.kGearRatio * DriveConstants.kWheelDiameterMeters * Math.PI);
+    m_leftEncoder.setVelocityConversionFactor((DriveConstants.kGearRatio * DriveConstants.kWheelDiameterMeters * Math.PI)/60);
+    m_rightEncoder.setPositionConversionFactor(DriveConstants.kGearRatio * DriveConstants.kWheelDiameterMeters * Math.PI);
+    m_rightEncoder.setVelocityConversionFactor((DriveConstants.kGearRatio * DriveConstants.kWheelDiameterMeters * Math.PI)/60);
 
     resetEncoders();
 
@@ -81,7 +81,7 @@ public class DriveSubsystem extends SubsystemBase {
   public DifferentialDriveWheelSpeeds getWheelSpeeds()
   {
     
-    return new DifferentialDriveWheelSpeeds(-m_leftEncoder.getVelocity(), m_rightEncoder.getVelocity());
+    return new DifferentialDriveWheelSpeeds(-m_leftEncoder.getVelocity() * (DriveConstants.kInvertedDrivetrain ? -1.0 : 1.0), m_rightEncoder.getVelocity() * (DriveConstants.kInvertedDrivetrain ? -1.0 : 1.0));
   }
 
   public Pose2d getPose()
@@ -140,13 +140,13 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void invertDrivetrain()
   {
-    DriveConstants.kGyroReversed = true;
+    DriveConstants.kGyroReversed = false;
     DriveConstants.kInvertedDrivetrain = true;
   }
 
   public void unInvertDrivetrain()
   {
-    DriveConstants.kGyroReversed = false;
+    DriveConstants.kGyroReversed = true;
     DriveConstants.kInvertedDrivetrain = false;
   }
 

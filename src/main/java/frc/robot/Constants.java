@@ -35,7 +35,8 @@ public final class Constants {
         public static final DifferentialDriveKinematics kDriveKinematics =
             new DifferentialDriveKinematics(kTrackwidthMeters);
 
-        public static final double kEncoderCPR = 42 * 11.21;
+        public static final double kGearRatio = 1/11.21;
+        public static final double kEncoderCPR = 42 * kGearRatio;
         public static final double kWheelDiameterMeters = 0.1524;
         public static final double kEncoderDistancePerPulse =
             (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
