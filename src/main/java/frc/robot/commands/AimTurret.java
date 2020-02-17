@@ -32,8 +32,8 @@ public class AimTurret extends CommandBase
         setpoint = 0;//Since we want to center the turret on the target
         tolerance = .25;// within half a degree of acurracy
         //Maximum and minimum values for turret output
-        max = .5;
-        min = -.5;
+        max = .2;
+        min = -.2;
         //How long should we wait to see if we are at our setpoint
         timeout = 1;
     }

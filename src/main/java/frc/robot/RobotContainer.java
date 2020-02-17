@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.AutoSelector;
+import frc.robot.commands.AimTurret;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -44,6 +45,10 @@ public class RobotContainer {
   private ServoHandler servoHandler;
 
   private static JoystickButton runTurretButton;
+  private static JoystickButton runConveyorForwardButton;
+  private static JoystickButton runConveyorBackwardButton;
+  private static JoystickButton runKickerButton;
+  private static JoystickButton aimButton;
 
 
   /**
@@ -56,6 +61,8 @@ public class RobotContainer {
     m_turretSubsystem = TurretSubsystem.getInstance();
     m_intakeSubsystem = IntakeSubsystem.getInstance();
     m_conveyorSubsystem = ConveyorSubsystem.getInstance();
+    visionHandler = VisionHandler.getInstance();
+    servoHandler = ServoHandler.getInstance();
 
     // Configure the button bindings
     configureButtonBindings();
@@ -69,6 +76,9 @@ public class RobotContainer {
   public void periodic()
   {
     servoHandler.run();
+    visionHandler.run();
+    updateSmartdashboard();
+
   }
 
   public void updateSmartdashboard()
@@ -94,8 +104,23 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     runTurretButton = new JoystickButton(m_controllerInputs.getLeftJoystick(), 1);
-    runTurretButton.whenPressed(() -> m_turretSubsystem.cannonSpin(1), m_turretSubsystem);
-    runTurretButton.whenReleased(() -> m_turretSubsystem.cannonSpin(0), m_turretSubsystem);
+    runTurretButton.whenActive(() -> m_turretSubsystem.cannonSpin(1), m_turretSubsystem);
+    runTurretButton.whenInactive(() -> m_turretSubsystem.cannonSpin(0), m_turretSubsystem);
+
+    runConveyorForwardButton = new JoystickButton(m_controllerInputs.getLeftJoystick(), 2);
+    runConveyorForwardButton.whenActive(() -> m_conveyorSubsystem.runConveyor(.5), m_conveyorSubsystem);
+    runConveyorForwardButton.whenInactive(() -> m_conveyorSubsystem.runConveyor(0), m_conveyorSubsystem);
+
+    runKickerButton = new JoystickButton(m_controllerInputs.getLeftJoystick(), 4);
+    runKickerButton.whenActive(() -> m_conveyorSubsystem.runKicker(), m_conveyorSubsystem);
+    runKickerButton.whenInactive(() -> m_conveyorSubsystem.stopKicker(), m_conveyorSubsystem);
+
+    runConveyorBackwardButton = new JoystickButton(m_controllerInputs.getLeftJoystick(), 3);
+    runConveyorBackwardButton.whenActive(() -> m_conveyorSubsystem.runConveyor(-.5), m_conveyorSubsystem);
+    runConveyorBackwardButton.whenInactive(() -> m_conveyorSubsystem.runConveyor(0), m_conveyorSubsystem);
+
+    aimButton = new JoystickButton(m_controllerInputs.getLeftJoystick(), 8);
+    aimButton.whenPressed(new AimTurret());
 
   }
 

@@ -77,12 +77,12 @@ public final class Constants {
     public static final class SystemConstants
     {
         //Talon SRX constants
-        public static final int kTurretMotorID = 0;
-        public static final int kKickerMotorID = 1;
+        public static final int kTurretMotorID = 6;
+        public static final int kKickerMotorID = 0;
         public static final int kConveyorMotorID = 2;
-        public static final int kShooterMasterID = 3;
-        public static final int kShooterFollowerID = 4;
-        public static final int kIntakeMotorID = 5;
+        public static final int kShooterMasterID = 0;
+        public static final int kShooterFollowerID = 5;
+        public static final int kIntakeMotorID = 4;
         //Spark MAX constants
         public static final int kWinchMasterID = 6;
         public static final int kWinchFollowerID = 7;
@@ -97,8 +97,8 @@ public final class Constants {
 
     public static final class TurretPIDConstants
     {
-        public static final double kP = 0.0;
-        public static final double kI = 0.0;
+        public static final double kP = 0.075;
+        public static final double kI = 0.01;
         public static final double kD = 0.0;
     }
 

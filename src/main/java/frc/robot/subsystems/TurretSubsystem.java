@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CannonPIDConstants;
 import frc.robot.Constants.SystemConstants;
@@ -51,6 +52,7 @@ public class TurretSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
 
+    SmartDashboard.putNumber("Cannon Velocity", (shooterMaster.getSelectedSensorVelocity() / 409.6) * 60);
   }
 
   /**
