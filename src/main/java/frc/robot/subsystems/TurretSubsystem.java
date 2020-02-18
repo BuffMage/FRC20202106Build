@@ -115,7 +115,7 @@ public class TurretSubsystem extends SubsystemBase {
     {
       return true;
     }
-    else if (shooterMaster.getClosedLoopError() < 100 && shooterMaster.getClosedLoopError() > -100)
+    else if ((shooterMaster.getClosedLoopError() / 409.6) * 60 < 100 && (shooterMaster.getClosedLoopError() / 409.6) * 60 > -100)
     {
       pidCounter++;
     }

@@ -112,6 +112,7 @@ public final class Constants {
         public static final int kTimeout = 30;
 
         public static final int kCannonRestingRPM = 5600;
+        public static final double kCannonToTargetHeight = 2;
     }
 
     public static final class VisionConstants

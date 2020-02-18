@@ -49,6 +49,7 @@ public class RobotContainer {
   private static JoystickButton runConveyorBackwardButton;
   private static JoystickButton runKickerButton;
   private static JoystickButton aimButton;
+  private static JoystickButton aimAndShootButton;
 
 
   /**
@@ -121,6 +122,9 @@ public class RobotContainer {
 
     aimButton = new JoystickButton(m_controllerInputs.getLeftJoystick(), 8);
     aimButton.whenPressed(new AimTurret());
+
+    aimAndShootButton = new JoystickButton(m_controllerInputs.getLeftJoystick(), 9);
+    aimAndShootButton.whenPressed(m_turretSubsystem.aimAndShoot());
 
   }
 

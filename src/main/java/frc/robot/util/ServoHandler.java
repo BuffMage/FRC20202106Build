@@ -14,6 +14,7 @@ public class ServoHandler
     private static int thetaP;
     private static int unitsPerRev;//Degrees in a circle
     private static int scaleFactor;
+    private static double target;
     //Max and min duty cycles of the pulses
     private static int minDC;
     private static int maxDC;
@@ -23,6 +24,8 @@ public class ServoHandler
 
     private static int q2min;
     private static int q3max;
+
+    private static int pidCounter;
 
 
     public static ServoHandler getInstance()
@@ -36,6 +39,8 @@ public class ServoHandler
 
     private ServoHandler()
     {
+        target = 0;
+        pidCounter = 0;
         rotations = 0;
         unitsPerRev = 360;
         q2min = unitsPerRev / 4;
@@ -119,8 +124,9 @@ public class ServoHandler
         hoodServo.setSpeed(speed);
     }
 
-    public void tempPID(double setAngle)
+    public void setAngle(double setAngle)
     {
+        target = setAngle;
         double kP = .01;
         double pidOffset = 0;
         double errorAngle = setAngle - angle;
@@ -149,5 +155,18 @@ public class ServoHandler
         }
         setSpeed(output + pidOffset);
 
+    }
+
+    public boolean atAngle()
+    {
+        if (pidCounter >= 12)
+        {
+            return true;
+        }
+        else if (target - getAngle() < 5 && target - getAngle() > -5)
+        {
+            pidCounter++;
+        }
+        return false;
     }
 }
