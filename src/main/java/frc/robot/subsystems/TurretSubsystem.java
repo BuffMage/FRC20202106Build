@@ -5,9 +5,17 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CannonPIDConstants;
 import frc.robot.Constants.SystemConstants;
+import frc.robot.commands.AimTurret;
+import frc.robot.commands.PrimeCannon;
+import frc.robot.commands.SetCannonSpeed;
+import frc.robot.commands.SetHoodAngle;
+import frc.robot.commands.ShootPowerCells;
 
 public class TurretSubsystem extends SubsystemBase {
 
@@ -112,5 +120,21 @@ public class TurretSubsystem extends SubsystemBase {
       pidCounter++;
     }
     return false;
+  }
+/**
+ * All in one command that aims, primes the cannon, sets the hood angle and cannon speed, and shoots the balls
+ * @return The all in one command
+ */
+  public Command aimAndShoot()
+  {
+    Command aimAndShootCommand = new SequentialCommandGroup(
+      new ParallelCommandGroup(
+        new AimTurret(), 
+        new PrimeCannon()),
+      new ParallelCommandGroup(
+        new SetHoodAngle(), 
+        new SetCannonSpeed()),
+      new ShootPowerCells());
+    return aimAndShootCommand;
   }
 }
