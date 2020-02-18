@@ -35,7 +35,7 @@ public class AimTurret extends CommandBase
         max = .2;
         min = -.2;
         //How long should we wait to see if we are at our setpoint
-        timeout = 1;
+        timeout = .24;
     }
     
     @Override
@@ -50,7 +50,7 @@ public class AimTurret extends CommandBase
     public void execute()
     {
         double output = turretPID.calculate(visionHandler.getX());
-        //Make sure our output is within our bounds (PIDS can produce values greater than 1 and less than -1)
+        //Make sure our output is within our bounds (PIDS can produce values greater than 1 and less than -1, so we must clamp the value)
         if (output > max)
         {
             output = max;
@@ -68,6 +68,14 @@ public class AimTurret extends CommandBase
     public void end(boolean interrupted)
     {
         //Reset PID and stop motor
+        if (interrupted)
+        {
+            System.out.println("Warning! AimTurret has stopped unexpectedly");
+        }
+        else
+        {
+            System.out.println("Aimed! Proceed with distance and RPM calculations");
+        }
         turretPID.reset();
         turretSubsystem.turretRotate(0);
         counter = 0;

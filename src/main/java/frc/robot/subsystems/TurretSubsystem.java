@@ -51,8 +51,7 @@ public class TurretSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-
-    SmartDashboard.putNumber("Cannon Velocity", (shooterMaster.getSelectedSensorVelocity() / 409.6) * 60);
+    SmartDashboard.putNumber("Cannon Velocity (RPM)", (shooterMaster.getSelectedSensorVelocity() / 409.6) * 60);
   }
 
   /**
@@ -76,6 +75,10 @@ public class TurretSubsystem extends SubsystemBase {
     shooterMaster.set(ControlMode.PercentOutput, value);
   }
 
+  /**
+   * Set a PID setpoint for the shooter wheel
+   * @param setpoint The desired RPM for the shooter wheel
+   */
   public void cannonSpinPID(double setpoint)
   {
     shooterMaster.set(ControlMode.Velocity, setpoint * 4096);
@@ -94,6 +97,10 @@ public class TurretSubsystem extends SubsystemBase {
     return value;
   }
 
+  /**
+   * Checks to see if we are at the setpoint RPM for our PID
+   * @return Whether we are at our setpoint or not
+   */
   public boolean atPIDRPM()
   {
     if (pidCounter >= 10)
