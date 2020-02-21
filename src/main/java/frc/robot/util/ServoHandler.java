@@ -3,8 +3,10 @@ package frc.robot.util;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycle;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class ServoHandler
+public class ServoHandler extends SubsystemBase
 {
     private static ServoHandler servoHandler = null;
     private static Servo hoodServo;
@@ -26,6 +28,8 @@ public class ServoHandler
     private static int q3max;
 
     private static int pidCounter;
+
+    public static boolean isResetting;
 
 
     public static ServoHandler getInstance()
@@ -58,7 +62,7 @@ public class ServoHandler
         thetaP = theta;
     }
 
-    public void run()
+    public void periodic()
     {
         thetaP = theta;
         theta = getRawTheta();
@@ -80,6 +84,11 @@ public class ServoHandler
         {
             angle = ((rotations + 1) * unitsPerRev) - (unitsPerRev - theta);
         }
+        if (!isResetting)
+        {
+            setAngle(target);
+        }
+        
     }
 
     private int getRawTheta()
@@ -103,12 +112,17 @@ public class ServoHandler
 
     public int getAngle()
     {
-        return angle - offset;
+        return -(angle - offset);
     }
 
     public void setOffset(int offset)
     {
         ServoHandler.offset = offset;
+    }
+
+    public int getRawAngle()
+    {
+        return angle;
     }
 
     public void setSpeed(double speed)
@@ -126,10 +140,18 @@ public class ServoHandler
 
     public void setAngle(double setAngle)
     {
+        if (setAngle > 430)
+        {
+            setAngle = 430;
+        }
+        else if (setAngle < 0)
+        {
+            setAngle = 0;
+        }
         target = setAngle;
-        double kP = .01;
+        double kP = .03;
         double pidOffset = 0;
-        double errorAngle = setAngle - angle;
+        double errorAngle = setAngle - getAngle();
         double output = errorAngle * kP;
 
         if (output > .8)
@@ -153,7 +175,7 @@ public class ServoHandler
         {
             pidOffset = 0;
         }
-        setSpeed(output + pidOffset);
+        setSpeed(-(output + pidOffset));
 
     }
 

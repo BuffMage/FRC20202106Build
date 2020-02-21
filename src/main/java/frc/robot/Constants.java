@@ -69,30 +69,32 @@ public final class Constants {
 
     public static final class ControlConstants
     {
-        public static final int RIGHT_JOYSTICK_ID = 0;
-        public static final int LEFT_JOYSTICK_ID = 1;
+        public static final int RIGHT_JOYSTICK_ID = 1;
+        public static final int LEFT_JOYSTICK_ID = 0;
         public static final int CONTROLLER_ID = 2;
     }
 
     public static final class SystemConstants
     {
         //Talon SRX constants
-        public static final int kTurretMotorID = 6;
-        public static final int kKickerMotorID = 0;
-        public static final int kConveyorMotorID = 2;
-        public static final int kShooterMasterID = 0;
-        public static final int kShooterFollowerID = 5;
-        public static final int kIntakeMotorID = 4;
+        public static final int kTurretMotorID = 2;
+        public static final int kKickerMotorID = 1;
+        public static final int kConveyorMotorID = 7;
+        public static final int kShooterMasterID = 4;
+        public static final int kShooterFollowerID = 3;
+        public static final int kIntakeMotorID = 6;
         //Spark MAX constants
         public static final int kWinchMasterID = 6;
         public static final int kWinchFollowerID = 7;
         //Pneumatics and servo constants
         public static final int kServoPWMPort = 0;
         public static final int kServoDIOPort = 0;
-        public static final int kIntakeSolenoidForward = 0;
-        public static final int kIntakeSolenoidReverse = 1;
+        public static final int kIntakeSolenoidForward = 6;
+        public static final int kIntakeSolenoidReverse = 7;
         public static final int kClimbSolenoidForward = 2;
         public static final int kClimbSolenoidReverse = 3;
+
+        public static boolean commandRunning = false;
     }
 
     public static final class TurretPIDConstants
@@ -105,10 +107,10 @@ public final class Constants {
     public static final class CannonPIDConstants
     {
         public static final int kPIDSlotX = 0;
-        public static final double kF = 0;
-        public static final double kP = 0;
+        public static final double kF = 0.014;
+        public static final double kP = 0.12;
         public static final double kI = 0;
-        public static final double kD = 0;
+        public static final double kD = 0.5;
         public static final int kTimeout = 30;
 
         public static final int kCannonRestingRPM = 5600;

@@ -10,6 +10,7 @@ public class ResetHood extends CommandBase
 
     ServoHandler servoHandler;
     boolean isFinished;
+    int counter = 0;
 
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     public ResetHood()
@@ -21,23 +22,37 @@ public class ResetHood extends CommandBase
     public void initialize()
     {
         isFinished = false;
+        counter = 0;
+        ServoHandler.isResetting = true;
     }
 
     @Override
     public void execute()
     {
-        servoHandler.setSpeed(.5);
-        if (LimitSwitchSubsystem.hoodSwitch.get())
+
+        if (counter >= 10)
         {
             isFinished = true;
         }
+        else if (LimitSwitchSubsystem.hoodSwitch.get())
+        {
+            servoHandler.setSpeed(0);
+            counter++;
+            
+        }
+        else
+        {
+            servoHandler.setSpeed(.5);
+        }
+
     }
 
     @Override
     public void end(boolean interrupted)
     {
+        ServoHandler.isResetting = false;
         servoHandler.setSpeed(0);
-        servoHandler.setOffset(servoHandler.getAngle());
+        servoHandler.setOffset(servoHandler.getRawAngle());
         if (interrupted)
         {
             System.out.println("Hood did not reset! Use caution");

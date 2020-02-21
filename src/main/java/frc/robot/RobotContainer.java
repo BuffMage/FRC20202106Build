@@ -7,13 +7,16 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.SystemConstants;
 import frc.robot.auto.AutoSelector;
 import frc.robot.commands.AimTurret;
+import frc.robot.commands.SetCannonSpeed;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -50,6 +53,9 @@ public class RobotContainer {
   private static JoystickButton runKickerButton;
   private static JoystickButton aimButton;
   private static JoystickButton aimAndShootButton;
+  private static JoystickButton setServoAngleTop;
+  private static JoystickButton setServoAngleMin;
+  private static JoystickButton setCannonSpeed;
 
 
   /**
@@ -67,18 +73,19 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
+    visionHandler.setNormalView();
   }
 
   public void drive()
   {
-    m_robotDrive.arcadeDrive(m_controllerInputs.getControllerLeftY(), m_controllerInputs.getControllerRightX());
+    m_robotDrive.arcadeDrive(m_controllerInputs.getLeftJoystick().getY(), m_controllerInputs.getRightJoystick().getX());
   }
 
   public void periodic()
   {
-    servoHandler.run();
     visionHandler.run();
     updateSmartdashboard();
+    buttonManger();
 
   }
 
@@ -103,7 +110,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-
+    /*
     runTurretButton = new JoystickButton(m_controllerInputs.getLeftJoystick(), 1);
     runTurretButton.whenActive(() -> m_turretSubsystem.cannonSpin(1), m_turretSubsystem);
     runTurretButton.whenInactive(() -> m_turretSubsystem.cannonSpin(0), m_turretSubsystem);
@@ -126,6 +133,62 @@ public class RobotContainer {
     aimAndShootButton = new JoystickButton(m_controllerInputs.getLeftJoystick(), 9);
     aimAndShootButton.whenPressed(m_turretSubsystem.aimAndShoot());
 
+    setServoAngleMin = new JoystickButton(m_controllerInputs.getRightJoystick(), 1);
+    setServoAngleMin.whenPressed(() -> servoHandler.setAngle(430), servoHandler);
+
+    setServoAngleTop = new JoystickButton(m_controllerInputs.getRightJoystick(), 3);
+    setServoAngleTop.whenPressed(() -> servoHandler.setAngle(0), servoHandler);
+
+    setCannonSpeed = new JoystickButton(m_controllerInputs.getRightJoystick(), 2);
+    setCannonSpeed.whenPressed(() -> m_turretSubsystem.cannonSpinPID(3500));
+    
+    */
+  }
+
+  public void buttonManger()
+  {
+    //Create some temporary buttons and stuff
+    if(DriverStation.getInstance().isOperatorControl() || SystemConstants.commandRunning)
+    {
+      if (m_controllerInputs.getIntakeDown()) m_intakeSubsystem.dropIntake();
+      if (m_controllerInputs.getIntakeUp()) m_intakeSubsystem.pickupIntake();
+      if (m_controllerInputs.getLeftJoystick().getRawButton(1)) m_turretSubsystem.cannonSpinPID(4500 * 7.85);
+      if (m_controllerInputs.getLeftJoystick().getRawButton(1)) servoHandler.setAngle(435);
+      if (m_controllerInputs.getLeftJoystick().getRawButton(2)) m_turretSubsystem.cannonSpinPID(3500 * 7.85);
+      if (m_controllerInputs.getLeftJoystick().getRawButton(3)) m_turretSubsystem.cannonSpin(0);
+
+      if (m_controllerInputs.getRunIntake())
+      {
+        m_intakeSubsystem.runIntakeForward();
+      }
+      else
+      {
+        m_intakeSubsystem.stopIntake();
+      }
+
+      if (m_controllerInputs.getRunConveyorForward())
+      {
+        m_conveyorSubsystem.runConveyor(.5);;
+      }
+      else if (m_controllerInputs.getRunConveyorBackward())
+      {
+        m_conveyorSubsystem.runConveyor(-.5);;
+      }
+      else
+      {
+        m_conveyorSubsystem.runConveyor(0);
+      }
+
+      if (m_controllerInputs.getRunKicker())
+      {
+        m_conveyorSubsystem.runKicker();
+      }
+      else
+      {
+        m_conveyorSubsystem.stopKicker();
+      }
+
+    }
   }
 
 

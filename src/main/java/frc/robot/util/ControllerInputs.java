@@ -29,38 +29,6 @@ public class ControllerInputs
         controller = new XboxController(ControlConstants.CONTROLLER_ID);
     }
 
-    /**
-     *Returns the Y of the right joystick
-     */
-    public double getRightY()
-    {
-        return rightJoystick.getY();
-    }
-
-    /**
-     *Returns the Y of the left joystick
-     */
-    public double getLeftY()
-    {
-        return leftJoystick.getY();
-    }
-
-    /**
-     * Returns X axis of controller
-     */    
-    public double getControllerLeftY()
-    {
-        return -controller.getRawAxis(1);
-    }
-
-    /**
-     * Returns Z axis of controller
-     */
-    public double getControllerRightX()
-    {
-        return controller.getRawAxis(2);
-    }
-
     public XboxController getController()
     {
         return controller;
@@ -74,6 +42,36 @@ public class ControllerInputs
     public Joystick getRightJoystick()
     {
         return rightJoystick;
+    }
+
+    public boolean getIntakeDown()
+    {
+        return controller.getRawButton(2);
+    }
+
+    public boolean getIntakeUp()
+    {
+        return controller.getRawButton(3);
+    }
+
+    public boolean getRunIntake()
+    {
+        return controller.getRawButton(8);
+    }
+
+    public boolean getRunConveyorForward()
+    {
+        return controller.getRawButton(6);
+    }
+
+    public boolean getRunConveyorBackward()
+    {
+        return controller.getRawButton(5);
+    }
+
+    public boolean getRunKicker()
+    {
+        return controller.getRawButton(7);
     }
 
 }

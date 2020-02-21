@@ -64,4 +64,9 @@ public class VisionHandler
         x = tx.getDouble(0);
         y = ty.getDouble(0);
     }
+
+    public void setNormalView()
+    {
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
+    }
 }

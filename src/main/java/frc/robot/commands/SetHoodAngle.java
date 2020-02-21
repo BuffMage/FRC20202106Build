@@ -8,10 +8,8 @@ import frc.robot.util.VisionHandler;
 
 public class SetHoodAngle extends CommandBase
 {
-    private static int gearTeethOnHood = 27;
-    private static int gearTeethOnServo = 20;
     //The range of our servo in degrees
-    private static double servoRange = (gearTeethOnHood / gearTeethOnServo) * 360;
+    private static double servoRange = 430;
     private static double hoodAngleRange = 30;
     private static double servoDegreesPerHoodDegree = servoRange / hoodAngleRange;
     private static double initialHoodAngle = 30;

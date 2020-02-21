@@ -60,6 +60,7 @@ public class TurretSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Cannon Velocity (RPM)", (shooterMaster.getSelectedSensorVelocity() / 409.6) * 60);
+    SmartDashboard.putNumber("Turret Rotation", turretMotor.getSelectedSensorPosition() / 4096);
   }
 
   /**
@@ -70,6 +71,14 @@ public class TurretSubsystem extends SubsystemBase {
   public void turretRotate(double value)
   {
     value = clampValue(value);
+    if (turretMotor.getSelectedSensorPosition() / 4096 <= 100 && value > 0)
+    {
+      value = 0;
+    }
+    else if (turretMotor.getSelectedSensorPosition() / 4096 >= 4000 && value < 0)
+    {
+      value = 0;
+    }
     turretMotor.set(ControlMode.PercentOutput, value);
   }
 
@@ -89,7 +98,7 @@ public class TurretSubsystem extends SubsystemBase {
    */
   public void cannonSpinPID(double setpoint)
   {
-    shooterMaster.set(ControlMode.Velocity, setpoint * 4096);
+    shooterMaster.set(ControlMode.Velocity, setpoint);
   }
 
   private double clampValue(double value)
@@ -136,5 +145,10 @@ public class TurretSubsystem extends SubsystemBase {
         new SetCannonSpeed()),
       new ShootPowerCells());
     return aimAndShootCommand;
+  }
+
+  public void resetTurretEncoder()
+  {
+    turretMotor.setSelectedSensorPosition(0);
   }
 }

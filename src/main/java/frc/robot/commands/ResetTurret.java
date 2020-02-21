@@ -46,10 +46,15 @@ public class ResetTurret extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_turretSubsystem.turretRotate(0);
+    m_turretSubsystem.resetTurretEncoder();
 
     if (interrupted)
     {
       System.out.println("Turret did not reset! Use caution");
+    }
+    else
+    {
+      System.out.println("Turret reset!");
     }
   }
 
