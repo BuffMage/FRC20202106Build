@@ -113,13 +113,13 @@ public final class Constants {
         public static final double kD = 0.5;
         public static final int kTimeout = 30;
 
-        public static final int kCannonRestingRPM = 5600;
+        public static final int kCannonRestingRPM = 3500;
         public static final double kCannonToTargetHeight = 2;
     }
 
     public static final class VisionConstants
     {
-        public static final double deltaHeight = 4-.3;//Difference in height between the target's height and the height of the camera.
-        public static final double camAngle = 45;//Camera tilt angle in degrees;
+        public static final double deltaHeight = 2.14-.3;//Difference in height between the target's height and the height of the camera.
+        public static final double camAngle = 60;//Camera tilt angle in degrees;
     }
 }

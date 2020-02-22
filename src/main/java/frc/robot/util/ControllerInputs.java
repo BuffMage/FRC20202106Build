@@ -74,4 +74,9 @@ public class ControllerInputs
         return controller.getRawButton(7);
     }
 
+    public boolean getAimAndShoot()
+    {
+        return controller.getRawButton(1);
+    }
+
 }

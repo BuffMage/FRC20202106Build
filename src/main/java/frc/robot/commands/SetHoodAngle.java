@@ -9,10 +9,10 @@ import frc.robot.util.VisionHandler;
 public class SetHoodAngle extends CommandBase
 {
     //The range of our servo in degrees
-    private static double servoRange = 430;
-    private static double hoodAngleRange = 30;
+    private static double servoRange = 435;
+    private static double hoodAngleRange = 20;
     private static double servoDegreesPerHoodDegree = servoRange / hoodAngleRange;
-    private static double initialHoodAngle = 30;
+    private static double initialHoodAngle = 80;
 
     private static VisionHandler visionHandler;
     private static ServoHandler servoHandler;

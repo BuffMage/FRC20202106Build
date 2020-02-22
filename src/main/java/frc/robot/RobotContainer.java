@@ -85,7 +85,7 @@ public class RobotContainer {
   {
     visionHandler.run();
     updateSmartdashboard();
-    buttonManger();
+    buttonManager();
 
   }
 
@@ -130,9 +130,6 @@ public class RobotContainer {
     aimButton = new JoystickButton(m_controllerInputs.getLeftJoystick(), 8);
     aimButton.whenPressed(new AimTurret());
 
-    aimAndShootButton = new JoystickButton(m_controllerInputs.getLeftJoystick(), 9);
-    aimAndShootButton.whenPressed(m_turretSubsystem.aimAndShoot());
-
     setServoAngleMin = new JoystickButton(m_controllerInputs.getRightJoystick(), 1);
     setServoAngleMin.whenPressed(() -> servoHandler.setAngle(430), servoHandler);
 
@@ -143,18 +140,20 @@ public class RobotContainer {
     setCannonSpeed.whenPressed(() -> m_turretSubsystem.cannonSpinPID(3500));
     
     */
+    aimAndShootButton = new JoystickButton(m_controllerInputs.getController(), 1);
+    aimAndShootButton.whenPressed(m_turretSubsystem.aimAndShoot());
   }
 
-  public void buttonManger()
+  public void buttonManager()
   {
     //Create some temporary buttons and stuff
     if(DriverStation.getInstance().isOperatorControl() || SystemConstants.commandRunning)
     {
       if (m_controllerInputs.getIntakeDown()) m_intakeSubsystem.dropIntake();
       if (m_controllerInputs.getIntakeUp()) m_intakeSubsystem.pickupIntake();
-      if (m_controllerInputs.getLeftJoystick().getRawButton(1)) m_turretSubsystem.cannonSpinPID(4500 * 7.85);
+      if (m_controllerInputs.getLeftJoystick().getRawButton(1)) m_turretSubsystem.cannonSpinPID(4500);
       if (m_controllerInputs.getLeftJoystick().getRawButton(1)) servoHandler.setAngle(435);
-      if (m_controllerInputs.getLeftJoystick().getRawButton(2)) m_turretSubsystem.cannonSpinPID(3500 * 7.85);
+      if (m_controllerInputs.getLeftJoystick().getRawButton(2)) m_turretSubsystem.cannonSpinPID(3500);
       if (m_controllerInputs.getLeftJoystick().getRawButton(3)) m_turretSubsystem.cannonSpin(0);
 
       if (m_controllerInputs.getRunIntake())

@@ -9,7 +9,7 @@ import frc.robot.util.VisionHandler;
 public class SetCannonSpeed extends CommandBase
 {
     //For a certain number of RPM we get one meter per second
-    private static double velocityToRPMConversionFactor = 4500 / 7.6;
+    private static double velocityToRPMConversionFactor = 4500 / 7.55;
     private static VisionHandler visionHandler;
     private static TurretSubsystem turretSubsystem;
 

@@ -3,7 +3,6 @@ package frc.robot.util;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycle;
 import edu.wpi.first.wpilibj.Servo;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ServoHandler extends SubsystemBase
@@ -90,7 +89,7 @@ public class ServoHandler extends SubsystemBase
         }
         
     }
-
+ 
     private int getRawTheta()
     {
         Double d = (unitsPerRev-1)-((((scaleFactor * positionFeedback.getOutput()) - minDC) * unitsPerRev)/(maxDC - minDC + 1));

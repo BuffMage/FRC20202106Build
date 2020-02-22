@@ -98,6 +98,11 @@ public class TurretSubsystem extends SubsystemBase {
    */
   public void cannonSpinPID(double setpoint)
   {
+    if (setpoint > 4500)
+    {
+      setpoint = 4500;
+    }
+    setpoint = (setpoint * 4096) / 600;
     shooterMaster.set(ControlMode.Velocity, setpoint);
   }
 
