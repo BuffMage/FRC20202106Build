@@ -13,7 +13,7 @@ public class SetCannonSpeed extends CommandBase
     private static VisionHandler visionHandler;
     private static TurretSubsystem turretSubsystem;
 
-    private static boolean isFinished;
+    private boolean isFinished;
 
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     public SetCannonSpeed()
@@ -26,6 +26,7 @@ public class SetCannonSpeed extends CommandBase
     @Override
     public void initialize()
     {
+        isFinished = false;
         turretSubsystem.cannonSpinPID(ParametricCalculator.getInitialVelocity(visionHandler.getDistance()) * velocityToRPMConversionFactor);
     }
 

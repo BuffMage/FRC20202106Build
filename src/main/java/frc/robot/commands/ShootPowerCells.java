@@ -19,7 +19,7 @@ public class ShootPowerCells extends CommandBase
     private static VisionHandler visionHandler;
     private static int counter;
 
-    private static boolean isFinished;
+    private boolean isFinished;
 
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     public ShootPowerCells()

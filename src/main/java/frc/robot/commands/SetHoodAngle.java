@@ -16,19 +16,16 @@ public class SetHoodAngle extends CommandBase
     private static double initialHoodAngle = 60;
     private static double angleToSetTo = 0;
 
-    private static ControllerInputs controllerInputs;
+    //private static ControllerInputs controllerInputs;
     private static VisionHandler visionHandler;
     private static ServoHandler servoHandler;
-
-    private static boolean isFinished;
 
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     public SetHoodAngle()
     {
-        isFinished = false;
         visionHandler = VisionHandler.getInstance();
         servoHandler = ServoHandler.getInstance();
-        controllerInputs = ControllerInputs.getInstance();
+        //controllerInputs = ControllerInputs.getInstance();
     }
     
     @Override
@@ -47,11 +44,11 @@ public class SetHoodAngle extends CommandBase
         if (servoHandler.atAngle())
         {
             isFinished = true;
-        }*/
+        }
         if (controllerInputs.getRightJoystick().getRawButton(1))
         {
             isFinished = true;
-        }
+        }*/
 
     }
 
@@ -71,6 +68,6 @@ public class SetHoodAngle extends CommandBase
     @Override
     public boolean isFinished()
     {
-        return isFinished;
+        return servoHandler.atAngle();
     }
 }
