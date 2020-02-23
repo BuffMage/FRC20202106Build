@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.SystemConstants;
 import frc.robot.Constants.TurretPIDConstants;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.util.VisionHandler;
@@ -30,7 +31,7 @@ public class AimTurret extends CommandBase
         turretSubsystem = TurretSubsystem.getInstance();
         visionHandler = VisionHandler.getInstance();
         setpoint = 0;//Since we want to center the turret on the target
-        tolerance = .25;// within half a degree of acurracy
+        tolerance = .5;// within half a degree of acurracy
         //Maximum and minimum values for turret output
         max = .2;
         min = -.2;
@@ -44,6 +45,8 @@ public class AimTurret extends CommandBase
         //Start PID
         turretPID.setSetpoint(setpoint);
         turretPID.setTolerance(tolerance);
+        SystemConstants.isShooting = true;
+        visionHandler.setVisionProcessingView();
     }
 
     @Override
@@ -71,6 +74,7 @@ public class AimTurret extends CommandBase
         if (interrupted)
         {
             System.out.println("Warning! AimTurret has stopped unexpectedly");
+            visionHandler.setNormalView();
         }
         else
         {
@@ -79,6 +83,7 @@ public class AimTurret extends CommandBase
         turretPID.reset();
         turretSubsystem.turretRotate(0);
         counter = 0;
+        
     }
 
     @Override

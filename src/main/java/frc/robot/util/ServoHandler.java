@@ -15,7 +15,7 @@ public class ServoHandler extends SubsystemBase
     private static int thetaP;
     private static int unitsPerRev;//Degrees in a circle
     private static int scaleFactor;
-    private static double target;
+    public static double target;
     //Max and min duty cycles of the pulses
     private static int minDC;
     private static int maxDC;
@@ -148,7 +148,7 @@ public class ServoHandler extends SubsystemBase
             setAngle = 0;
         }
         target = setAngle;
-        double kP = .03;
+        double kP = .04;
         double pidOffset = 0;
         double errorAngle = setAngle - getAngle();
         double output = errorAngle * kP;
@@ -178,15 +178,26 @@ public class ServoHandler extends SubsystemBase
 
     }
 
+    public void resetPID()
+    {
+        pidCounter = 0;
+    }
+
     public boolean atAngle()
     {
-        if (pidCounter >= 12)
-        {
-            return true;
-        }
-        else if (target - getAngle() < 5 && target - getAngle() > -5)
+
+        if (target - getAngle() < 10 && target - getAngle() > -10)
         {
             pidCounter++;
+        }
+        else
+        {
+            pidCounter = 0;
+        }
+        
+        if (pidCounter >= 50)
+        {
+            return true;
         }
         return false;
     }

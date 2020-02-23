@@ -15,7 +15,7 @@ public class ParametricCalculator
     public static double getHoodAngle(double distance)
     {
         calculateHorizontalVelocity(distance);
-        return 90 - Math.toDegrees(Math.tanh(vertVel / horVel));
+        return Math.toDegrees(Math.tanh(vertVel / horVel));
     }
 
     /**

@@ -11,6 +11,9 @@ public class ConveyorSubsystem extends SubsystemBase {
   private static TalonSRX conveyorMotor;
   private static TalonSRX kickerMotor;
   private static ConveyorSubsystem conveyorSubsystem = null;
+  private static IntakeSubsystem intakeSubsystem;
+  public static boolean isRunningConveyor = false;
+  private static int conveyorCounter = 0;
 
   public static ConveyorSubsystem getInstance()
   {
@@ -24,11 +27,34 @@ public class ConveyorSubsystem extends SubsystemBase {
   private ConveyorSubsystem() {
     conveyorMotor = new TalonSRX(SystemConstants.kConveyorMotorID);
     kickerMotor = new TalonSRX(SystemConstants.kKickerMotorID);
+    intakeSubsystem = IntakeSubsystem.getInstance();
     conveyorMotor.configFactoryDefault();
   }
 
   @Override
   public void periodic() {
+
+    if ((LimitSwitchSubsystem.conveyorSwitch.get() && conveyorCounter == 0) && !SystemConstants.isShooting)
+    {
+      runConveyor(.5);
+      intakeSubsystem.stopIntake();
+      isRunningConveyor = true;
+    }
+    else if (conveyorCounter <= 15 && !SystemConstants.isShooting)
+    {
+      conveyorCounter++;
+    }
+    /*
+    else if (LimitSwitchSubsystem.conveyorSwitch.get() && !SystemConstants.isShooting)
+    {
+      runConveyor(0);
+    }*/
+    else if (!SystemConstants.isShooting)
+    {
+      runConveyor(0);
+      isRunningConveyor = false;
+      conveyorCounter = 0;
+    }
 
   }
 

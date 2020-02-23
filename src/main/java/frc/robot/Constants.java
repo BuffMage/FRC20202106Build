@@ -95,31 +95,32 @@ public final class Constants {
         public static final int kClimbSolenoidReverse = 3;
 
         public static boolean commandRunning = false;
+        public static boolean isShooting = false;
     }
 
     public static final class TurretPIDConstants
     {
         public static final double kP = 0.075;
-        public static final double kI = 0.01;
-        public static final double kD = 0.0;
+        public static final double kI = 0.1;
+        public static final double kD = 0;
     }
 
     public static final class CannonPIDConstants
     {
         public static final int kPIDSlotX = 0;
-        public static final double kF = 0.014;
-        public static final double kP = 0.12;
+        public static final double kF = 0.04;
+        public static final double kP = 0.25;
         public static final double kI = 0;
         public static final double kD = 0.5;
         public static final int kTimeout = 30;
 
         public static final int kCannonRestingRPM = 3500;
-        public static final double kCannonToTargetHeight = 2;
+        public static final double kCannonToTargetHeight = 1;
     }
 
     public static final class VisionConstants
     {
-        public static final double deltaHeight = 2.14-.3;//Difference in height between the target's height and the height of the camera.
-        public static final double camAngle = 60;//Camera tilt angle in degrees;
+        public static final double deltaHeight = 1.98;//Difference in height between the target's height and the height of the camera.
+        public static final double camAngle = 45;//Camera tilt angle in degrees;
     }
 }

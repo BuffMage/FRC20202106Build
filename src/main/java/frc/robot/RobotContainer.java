@@ -23,6 +23,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimitSwitchSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.util.ControllerInputs;
+import frc.robot.util.ParametricCalculator;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.util.ServoHandler;
@@ -73,7 +74,7 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
-    visionHandler.setNormalView();
+    
   }
 
   public void drive()
@@ -86,6 +87,7 @@ public class RobotContainer {
     visionHandler.run();
     updateSmartdashboard();
     buttonManager();
+    
 
   }
 
@@ -101,6 +103,10 @@ public class RobotContainer {
     SmartDashboard.putNumber("Target Y", visionHandler.getY());
     SmartDashboard.putNumber("Target Distance", visionHandler.getDistance());
     SmartDashboard.putNumber("Servo Angle", servoHandler.getAngle());
+    SmartDashboard.putNumber("Supposed Angle", ParametricCalculator.getHoodAngle(visionHandler.getDistance()));
+    SmartDashboard.putNumber("Servo Target Angle", ServoHandler.target);
+    SmartDashboard.putNumber("Calculated Angle", 60 - ParametricCalculator.getHoodAngle(visionHandler.getDistance()));
+    SmartDashboard.putNumber("Initial Velocity", ParametricCalculator.getInitialVelocity(visionHandler.getDistance()));
   }
 
   /**
@@ -140,8 +146,11 @@ public class RobotContainer {
     setCannonSpeed.whenPressed(() -> m_turretSubsystem.cannonSpinPID(3500));
     
     */
-    aimAndShootButton = new JoystickButton(m_controllerInputs.getController(), 1);
+    aimAndShootButton = new JoystickButton(m_controllerInputs.getController(), 4);
     aimAndShootButton.whenPressed(m_turretSubsystem.aimAndShoot());
+
+    aimButton = new JoystickButton(m_controllerInputs.getController(), 1);
+    aimButton.whenPressed(new AimTurret());
   }
 
   public void buttonManager()
@@ -151,12 +160,14 @@ public class RobotContainer {
     {
       if (m_controllerInputs.getIntakeDown()) m_intakeSubsystem.dropIntake();
       if (m_controllerInputs.getIntakeUp()) m_intakeSubsystem.pickupIntake();
-      if (m_controllerInputs.getLeftJoystick().getRawButton(1)) m_turretSubsystem.cannonSpinPID(4500);
+      //if (m_controllerInputs.getLeftJoystick().getRawButton(1)) m_turretSubsystem.cannonSpinPID(4500);
       if (m_controllerInputs.getLeftJoystick().getRawButton(1)) servoHandler.setAngle(435);
       if (m_controllerInputs.getLeftJoystick().getRawButton(2)) m_turretSubsystem.cannonSpinPID(3500);
       if (m_controllerInputs.getLeftJoystick().getRawButton(3)) m_turretSubsystem.cannonSpin(0);
+      if (m_controllerInputs.getLeftJoystick().getRawButton(3)) servoHandler.setAngle(0);;
+      
 
-      if (m_controllerInputs.getRunIntake())
+      if (m_controllerInputs.getRunIntake() && !ConveyorSubsystem.isRunningConveyor)
       {
         m_intakeSubsystem.runIntakeForward();
       }

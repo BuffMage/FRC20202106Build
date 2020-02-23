@@ -8,6 +8,7 @@ public class LimitSwitchSubsystem extends SubsystemBase
     private static LimitSwitchSubsystem limitSwitchSubsystem = null;
     public static LimitSwitch turretSwitch;
     public static LimitSwitch hoodSwitch;
+    public static LimitSwitch conveyorSwitch;
 
     public static LimitSwitchSubsystem getInstance()
     {
@@ -22,6 +23,7 @@ public class LimitSwitchSubsystem extends SubsystemBase
     {
         turretSwitch = new LimitSwitch(2);
         hoodSwitch = new LimitSwitch(1);
+        conveyorSwitch = new LimitSwitch(3);
     }
 
     @Override
@@ -29,5 +31,6 @@ public class LimitSwitchSubsystem extends SubsystemBase
     {
         turretSwitch.update();
         hoodSwitch.update();
+        conveyorSwitch.update();
     }
 }

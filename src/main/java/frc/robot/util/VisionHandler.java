@@ -56,7 +56,7 @@ public class VisionHandler
      */
     public double getDistance()
     {
-        return VisionConstants.deltaHeight/(Math.tan(Math.toRadians(VisionConstants.camAngle + x)));
+        return VisionConstants.deltaHeight/(Math.tan(Math.toRadians(VisionConstants.camAngle + y))) + .5;
     }
 
     public void run()
@@ -67,6 +67,11 @@ public class VisionHandler
 
     public void setNormalView()
     {
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
+        table.getEntry("pipeline").setNumber(1);
+    }
+
+    public void setVisionProcessingView()
+    {
+        table.getEntry("pipeline").setNumber(0);
     }
 }
