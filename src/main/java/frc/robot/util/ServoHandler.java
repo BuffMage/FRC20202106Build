@@ -148,7 +148,7 @@ public class ServoHandler extends SubsystemBase
             setAngle = 0;
         }
         target = setAngle;
-        double kP = .04;
+        double kP = .01;
         double pidOffset = 0;
         double errorAngle = setAngle - getAngle();
         double output = errorAngle * kP;

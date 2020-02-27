@@ -71,16 +71,16 @@ public class TurretSubsystem extends SubsystemBase {
   public void turretRotate(double value)
   {
     value = clampValue(value);
-    /*
-    if (turretMotor.getSelectedSensorPosition() / 4096 <= 100 && value > 0)
+    
+    if ((-turretMotor.getSelectedSensorPosition() / 4096 <= 30 && value > 0) && !SystemConstants.isTurretResetting)
     {
       value = 0;
     }
-    else if (turretMotor.getSelectedSensorPosition() / 4096 >= 4000 && value < 0)
+    else if ((-turretMotor.getSelectedSensorPosition() / 4096 >= 180 && value < 0) && !SystemConstants.isTurretResetting)
     {
       value = 0;
     }
-    */
+    
     turretMotor.set(ControlMode.PercentOutput, value);
   }
 

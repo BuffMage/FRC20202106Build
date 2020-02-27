@@ -77,6 +77,11 @@ public class RobotContainer {
     
   }
 
+  public void robotInit()
+  {
+    m_intakeSubsystem.pickupIntake();
+  }
+
   public void drive()
   {
     m_robotDrive.arcadeDrive(m_controllerInputs.getLeftJoystick().getY(), m_controllerInputs.getRightJoystick().getX());
@@ -96,6 +101,7 @@ public class RobotContainer {
     SmartDashboard.putNumber("Left Encoder", m_robotDrive.getLeftEncoderDistance());
     SmartDashboard.putNumber("Right Encoder", m_robotDrive.getRightEncoderDistance());
     SmartDashboard.putNumber("Heading", m_robotDrive.getHeading());
+    SmartDashboard.putNumber("Gyro Rate", m_robotDrive.getTurnRate());
     SmartDashboard.putNumber("Left Vel", m_robotDrive.getWheelSpeeds().leftMetersPerSecond);
     SmartDashboard.putNumber("Right Vel", m_robotDrive.getWheelSpeeds().rightMetersPerSecond);
 
@@ -105,7 +111,7 @@ public class RobotContainer {
     SmartDashboard.putNumber("Servo Angle", servoHandler.getAngle());
     SmartDashboard.putNumber("Supposed Angle", ParametricCalculator.getHoodAngle(visionHandler.getDistance()));
     SmartDashboard.putNumber("Servo Target Angle", ServoHandler.target);
-    SmartDashboard.putNumber("Calculated Angle", 60 - ParametricCalculator.getHoodAngle(visionHandler.getDistance()));
+    SmartDashboard.putNumber("Calculated Angle", 80 - ParametricCalculator.getHoodAngle(visionHandler.getDistance()));
     SmartDashboard.putNumber("Initial Velocity", ParametricCalculator.getInitialVelocity(visionHandler.getDistance()));
   }
 
@@ -167,12 +173,17 @@ public class RobotContainer {
       if (m_controllerInputs.getLeftJoystick().getRawButton(3)) servoHandler.setAngle(0);;
       
 
-      if (m_controllerInputs.getRunIntake() && !ConveyorSubsystem.isRunningConveyor)
+      if (m_controllerInputs.getRunIntake())
       {
         m_intakeSubsystem.runIntakeForward();
       }
+      else if(m_controllerInputs.getController().getRawButton(11))
+      {
+        m_intakeSubsystem.runIntakeReverse();
+      }
       else
       {
+        
         m_intakeSubsystem.stopIntake();
       }
 
@@ -193,9 +204,25 @@ public class RobotContainer {
       {
         m_conveyorSubsystem.runKicker();
       }
-      else
+      else if (!SystemConstants.isShooting)
       {
         m_conveyorSubsystem.stopKicker();
+      }
+
+      if (!SystemConstants.isShooting)
+      {
+        if (-m_controllerInputs.getController().getRawAxis(2) > .2)
+        {
+          m_turretSubsystem.turretRotate(.2);
+        }
+        else if (-m_controllerInputs.getController().getRawAxis(2) < -.2)
+        {
+          m_turretSubsystem.turretRotate(-.2);
+        }
+        else
+        {
+          m_turretSubsystem.turretRotate(-m_controllerInputs.getController().getRawAxis(2));
+        }
       }
 
     }

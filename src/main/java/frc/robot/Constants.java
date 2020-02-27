@@ -89,13 +89,14 @@ public final class Constants {
         //Pneumatics and servo constants
         public static final int kServoPWMPort = 0;
         public static final int kServoDIOPort = 0;
-        public static final int kIntakeSolenoidForward = 6;
-        public static final int kIntakeSolenoidReverse = 7;
+        public static final int kIntakeSolenoidForward = 7;
+        public static final int kIntakeSolenoidReverse = 6;
         public static final int kClimbSolenoidForward = 2;
         public static final int kClimbSolenoidReverse = 3;
 
         public static boolean commandRunning = false;
         public static boolean isShooting = false;
+        public static boolean isTurretResetting = false;
     }
 
     public static final class TurretPIDConstants
@@ -115,12 +116,12 @@ public final class Constants {
         public static final int kTimeout = 30;
 
         public static final int kCannonRestingRPM = 3500;
-        public static final double kCannonToTargetHeight = 1;
+        public static final double kCannonToTargetHeight = 1.93;
     }
 
     public static final class VisionConstants
     {
-        public static final double deltaHeight = 1.98;//Difference in height between the target's height and the height of the camera.
+        public static final double deltaHeight = 1.88;//Difference in height between the target's height and the height of the camera.
         public static final double camAngle = 45;//Camera tilt angle in degrees;
     }
 }

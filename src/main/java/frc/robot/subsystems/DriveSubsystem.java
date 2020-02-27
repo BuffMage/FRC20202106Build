@@ -1,15 +1,18 @@
 package frc.robot.subsystems;
 
+import java.io.IOException;
+
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,7 +28,7 @@ public class DriveSubsystem extends SubsystemBase {
   private static CANSparkMax m_rightMotor1;
   private static CANSparkMax m_rightMotor2;
   private static DifferentialDrive m_drive;
-  private static Gyro m_gyro;
+  private static AHRS navx;
   private static CANEncoder m_leftEncoder;
   private static CANEncoder m_rightEncoder;
   private static DifferentialDriveOdometry m_odometry;
@@ -53,7 +56,6 @@ public class DriveSubsystem extends SubsystemBase {
     m_leftMotors = new SpeedControllerGroup(m_leftMotor1, m_leftMotor2);
     m_rightMotors = new SpeedControllerGroup(m_rightMotor1, m_rightMotor2);
     m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
-    m_gyro = new ADXRS450_Gyro();
 
     m_leftEncoder = m_leftMotor1.getEncoder();
     m_rightEncoder = m_rightMotor1.getEncoder();
@@ -67,6 +69,13 @@ public class DriveSubsystem extends SubsystemBase {
     resetEncoders();
 
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
+    try
+    {
+      navx = new AHRS(SPI.Port.kMXP);
+    }catch (RuntimeException e)
+    {
+      DriverStation.reportError("Navx had a problem : " + e.getMessage(), true);
+    }
     
   }
 
@@ -104,17 +113,24 @@ public class DriveSubsystem extends SubsystemBase {
 
   public double getHeading()
   {
-    return Math.IEEEremainder(m_gyro.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+    double angle = 0;
+    try{
+      angle = Math.IEEEremainder(navx.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+    } catch(RuntimeException ex)
+    {
+      DriverStation.reportError("Navx could not get heading" + ex.getMessage(), true);
+    }
+    return angle;
   }
 
   public void zeroHeading()
   {
-    m_gyro.reset();
+    navx.reset();
   }
 
   public double getTurnRate()
   {
-    return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+    return navx.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
   
   public double getAverageEncoderDistance()

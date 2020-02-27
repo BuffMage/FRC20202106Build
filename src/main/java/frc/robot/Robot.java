@@ -12,12 +12,14 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.ResetHood;
+import frc.robot.commands.ResetTurret;
 import frc.robot.util.VisionHandler;
 
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private Command m_hoodTestCommand;
+  private Command m_resetTurret;
 
   private RobotContainer m_robotContainer;
   private VisionHandler visionHandler;
@@ -29,6 +31,8 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     visionHandler = VisionHandler.getInstance();
+    m_robotContainer.robotInit();
+    visionHandler.setNormalView();
   }
 
   @Override
@@ -71,6 +75,8 @@ public class Robot extends TimedRobot {
     // this line or comment it out.
     m_hoodTestCommand = new ResetHood();
     m_hoodTestCommand.schedule();
+    m_resetTurret = new ResetTurret();
+    m_resetTurret.schedule();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }

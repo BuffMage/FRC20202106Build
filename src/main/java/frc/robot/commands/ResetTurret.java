@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import frc.robot.Constants.SystemConstants;
 import frc.robot.subsystems.LimitSwitchSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -26,6 +27,7 @@ public class ResetTurret extends CommandBase {
       {
         isFinished = true;
       }
+    SystemConstants.isTurretResetting = true;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -38,7 +40,7 @@ public class ResetTurret extends CommandBase {
     }
     else
     {
-      m_turretSubsystem.turretRotate(.2);
+      m_turretSubsystem.turretRotate(.1);
     }
   }
 
@@ -47,7 +49,7 @@ public class ResetTurret extends CommandBase {
   public void end(boolean interrupted) {
     m_turretSubsystem.turretRotate(0);
     m_turretSubsystem.resetTurretEncoder();
-
+    SystemConstants.isTurretResetting = false;
     if (interrupted)
     {
       System.out.println("Turret did not reset! Use caution");

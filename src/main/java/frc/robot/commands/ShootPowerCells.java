@@ -51,7 +51,7 @@ public class ShootPowerCells extends CommandBase
         else if (counter >= 12)
         {
             conveyorSubsystem.runConveyor(.5);
-            intakeSubsystem.runIntakeForward();
+            //intakeSubsystem.runIntakeForward();
         }
         if (counter >= fiveCellShotTime / .02)
         {

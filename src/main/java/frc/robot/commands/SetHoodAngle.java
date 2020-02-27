@@ -13,7 +13,7 @@ public class SetHoodAngle extends CommandBase
     private static double servoRange = 435;
     private static double hoodAngleRange = 20;
     private static double servoDegreesPerHoodDegree = servoRange / hoodAngleRange;
-    private static double initialHoodAngle = 60;
+    private static double initialHoodAngle = 80;
     private static double angleToSetTo = 0;
 
     //private static ControllerInputs controllerInputs;

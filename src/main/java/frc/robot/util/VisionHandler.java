@@ -56,7 +56,7 @@ public class VisionHandler
      */
     public double getDistance()
     {
-        return VisionConstants.deltaHeight/(Math.tan(Math.toRadians(VisionConstants.camAngle + y))) + .5;
+        return VisionConstants.deltaHeight/(Math.tan(Math.toRadians(VisionConstants.camAngle + y)));
     }
 
     public void run()

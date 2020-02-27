@@ -33,11 +33,11 @@ public class ConveyorSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-
+    /*
     if ((LimitSwitchSubsystem.conveyorSwitch.get() && conveyorCounter == 0) && !SystemConstants.isShooting)
     {
       runConveyor(.5);
-      intakeSubsystem.stopIntake();
+      //intakeSubsystem.stopIntake();
       isRunningConveyor = true;
     }
     else if (conveyorCounter <= 15 && !SystemConstants.isShooting)
@@ -49,11 +49,19 @@ public class ConveyorSubsystem extends SubsystemBase {
     {
       runConveyor(0);
     }*/
+    /*
     else if (!SystemConstants.isShooting)
     {
-      runConveyor(0);
       isRunningConveyor = false;
       conveyorCounter = 0;
+    }*/
+    if (LimitSwitchSubsystem.conveyorSwitch.get())
+    {
+      runConveyor(.5);
+    }
+    else
+    {
+      runConveyor(0);
     }
 
   }
