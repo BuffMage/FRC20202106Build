@@ -73,6 +73,7 @@ public class AimTurret extends CommandBase
         //Reset PID and stop motor
         if (interrupted)
         {
+            SystemConstants.isShooting = false;
             System.out.println("Warning! AimTurret has stopped unexpectedly");
             visionHandler.setNormalView();
         }

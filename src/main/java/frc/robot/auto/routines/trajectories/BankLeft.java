@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.commands.ResetPose;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class BankLeft
@@ -26,10 +27,11 @@ public class BankLeft
         try {
             Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
             trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+            trajectory = trajectory.relativeTo(trajectory.getInitialPose());
         } catch (IOException ex) {
             DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
         }
-        //trajectory = trajectory.relativeTo(trajectory.getInitialPose());
+        
         
         RamseteCommand ramseteCommand = new RamseteCommand(
             trajectory,
@@ -46,7 +48,7 @@ public class BankLeft
             m_robotDrive::tankDriveVolts,
             m_robotDrive
         );
-
-        return ramseteCommand.andThen(() -> m_robotDrive.tankDriveVolts(0, 0));
+        
+        return ramseteCommand.andThen(() -> m_robotDrive.tankDriveVolts(0, 0)).andThen(new ResetPose());
     }
 }

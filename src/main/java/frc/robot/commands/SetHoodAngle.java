@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.util.ControllerInputs;
+import frc.robot.Constants.SystemConstants;
 import frc.robot.util.ParametricCalculator;
 import frc.robot.util.ServoHandler;
 import frc.robot.util.VisionHandler;
@@ -37,27 +37,13 @@ public class SetHoodAngle extends CommandBase
     }
 
     @Override
-    public void execute()
-    {
-        //servoHandler.setAngle((ParametricCalculator.getHoodAngle(visionHandler.getDistance()) - initialHoodAngle) * servoDegreesPerHoodDegree);
-        /*
-        if (servoHandler.atAngle())
-        {
-            isFinished = true;
-        }
-        if (controllerInputs.getRightJoystick().getRawButton(1))
-        {
-            isFinished = true;
-        }*/
-
-    }
-
-    @Override
     public void end(boolean interrupted)
     {
         if (interrupted)
         {
             System.out.println("Warning! Hood angle not set");
+            visionHandler.setNormalView();
+            SystemConstants.isShooting = false;
         }
         else
         {

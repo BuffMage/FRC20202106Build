@@ -10,13 +10,13 @@ public class LimitSwitchSubsystem extends SubsystemBase
     public static LimitSwitch hoodSwitch;
     public static LimitSwitch conveyorSwitch;
 
-    public static LimitSwitchSubsystem getInstance()
+    public static void initialize()
     {
         if (limitSwitchSubsystem == null)
         {
             limitSwitchSubsystem = new LimitSwitchSubsystem();
         }
-        return limitSwitchSubsystem;
+        
     }
 
     private LimitSwitchSubsystem()

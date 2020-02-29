@@ -1,7 +1,5 @@
 package frc.robot.util;
 
-import frc.robot.Constants;
-
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
