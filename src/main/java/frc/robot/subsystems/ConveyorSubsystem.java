@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.SystemConstants;
 
 public class ConveyorSubsystem extends SubsystemBase {
@@ -30,11 +31,11 @@ public class ConveyorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     
-    if (LimitSwitchSubsystem.conveyorSwitch.get())
+    if (LimitSwitchSubsystem.conveyorSwitch.get() && !RobotContainer.manualConveyor)
     {
       runConveyor(.5);
     }
-    else
+    else if (!RobotContainer.manualConveyor)
     {
       runConveyor(0);
     }

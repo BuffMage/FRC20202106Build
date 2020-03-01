@@ -79,7 +79,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    m_odometry.update(Rotation2d.fromDegrees(getHeading()), -m_leftEncoder.getPosition(), m_rightEncoder.getPosition());//Put a negative on one of these since we cant invert hall effect encoders.
+    m_odometry.update(Rotation2d.fromDegrees(getHeading()), -m_leftEncoder.getPosition() * (DriveConstants.kInvertedDrivetrain ? -1.0 : 1.0), m_rightEncoder.getPosition() * (DriveConstants.kInvertedDrivetrain ? -1.0 : 1.0));//Put a negative on one of these since we cant invert hall effect encoders.
 
   }
 
@@ -143,12 +143,16 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void arcadeDrive(double fwd, double rot)
   {
-    m_drive.arcadeDrive(fwd, -rot, true);
+    if (DriverStation.getInstance().isOperatorControl())
+    {
+      m_drive.arcadeDrive(fwd, -rot, true);
+    }
   }
 
   public void resetOdometry(Pose2d pose)
   {
     resetEncoders();
+    zeroHeading();
     m_odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
   }
 

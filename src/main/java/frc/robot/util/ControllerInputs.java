@@ -46,17 +46,17 @@ public class ControllerInputs
 
     public boolean getIntakeDown()
     {
-        return controller.getRawButton(2);
+        return leftJoystick.getRawButton(1);
     }
 
     public boolean getIntakeUp()
     {
-        return controller.getRawButton(3);
+        return leftJoystick.getRawButton(2);
     }
 
     public boolean getRunIntake()
     {
-        return controller.getRawButton(8);
+        return rightJoystick.getRawButton(1);
     }
 
     public boolean getRunConveyorForward()

@@ -36,12 +36,12 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void runIntakeForward()
   {
-    intakeMotor.set(ControlMode.PercentOutput, -.5);
+    intakeMotor.set(ControlMode.PercentOutput, .5);
   }
 
   public void runIntakeReverse()
   {
-    intakeMotor.set(ControlMode.PercentOutput, 1);
+    intakeMotor.set(ControlMode.PercentOutput, -1);
   }
 
   public void dropIntake()

@@ -61,8 +61,8 @@ public final class Constants {
 
     public static final class AutoConstants
     {
-        public static final double kMaxSpeedMetersPerSecond = 3;
-        public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+        public static final double kMaxSpeedMetersPerSecond = 1.5;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 1.5;
         public static final double kRamseteB = 2.0;
         public static final double kRamseteZeta = .7;
     }
@@ -101,8 +101,8 @@ public final class Constants {
 
     public static final class TurretPIDConstants
     {
-        public static final double kP = 0.075;
-        public static final double kI = 0.1;
+        public static final double kP = 0.05;
+        public static final double kI = 0.075;
         public static final double kD = 0;
     }
 
@@ -116,12 +116,12 @@ public final class Constants {
         public static final int kTimeout = 30;
 
         public static final int kCannonRestingRPM = 3500;
-        public static final double kCannonToTargetHeight = 1.93;
+        public static final double kCannonToTargetHeight = 2.08 - .3;
     }
 
     public static final class VisionConstants
     {
-        public static final double deltaHeight = 1.88;//Difference in height between the target's height and the height of the camera.
+        public static final double deltaHeight = 1.96;//Difference in height between the target's height and the height of the camera.
         public static final double camAngle = 45;//Camera tilt angle in degrees;
     }
 }

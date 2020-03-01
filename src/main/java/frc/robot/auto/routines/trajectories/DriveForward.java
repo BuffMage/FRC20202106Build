@@ -1,3 +1,5 @@
+//Copy this file and rename it to create another trajectory
+
 package frc.robot.auto.routines.trajectories;
 
 import java.io.IOException;
@@ -17,16 +19,18 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.ResetPose;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class BankLeft
+public class DriveForward
 {
     public static Command getTrajectory()
     {
+        
         DriveSubsystem m_robotDrive = DriveSubsystem.getInstance();
         Trajectory trajectory = null;
-        String trajectoryJSON = "paths/BankLeft.wpilib.json";
+        String trajectoryJSON = "paths/DriveForward.wpilib.json";//Change this to our specified path
         try {
             Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
             trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+            //Sets our initial pose as the point of origin, otherwise robot will think it first needs to travel to initial position
             trajectory = trajectory.relativeTo(trajectory.getInitialPose());
         } catch (IOException ex) {
             DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
@@ -48,7 +52,6 @@ public class BankLeft
             m_robotDrive::tankDriveVolts,
             m_robotDrive
         );
-        
         return ramseteCommand.andThen(() -> m_robotDrive.tankDriveVolts(0, 0)).andThen(new ResetPose());
     }
 }

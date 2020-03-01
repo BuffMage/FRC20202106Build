@@ -63,6 +63,11 @@ public class TurretSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Turret Rotation", turretMotor.getSelectedSensorPosition() / 4096);
   }
 
+  public double getTurretRotation()
+  {
+    return turretMotor.getSelectedSensorPosition() / 4096;
+  }
+
   /**
    * Rotates the turret motor at a specified value
    * @param value The percent output to be sent to the motor

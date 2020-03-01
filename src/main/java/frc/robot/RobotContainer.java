@@ -47,6 +47,8 @@ public class RobotContainer {
 
   private static JoystickButton aimAndShootButton;
 
+  public static boolean manualConveyor;
+
 
 
   /**
@@ -64,7 +66,7 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
-    
+    manualConveyor = false;
   }
 
   public void robotInit()
@@ -97,11 +99,13 @@ public class RobotContainer {
     SmartDashboard.putNumber("Servo Target Angle", ServoHandler.target);
     SmartDashboard.putNumber("Calculated Angle", 80 - ParametricCalculator.getHoodAngle(visionHandler.getDistance()));
     SmartDashboard.putNumber("Initial Velocity", ParametricCalculator.getInitialVelocity(visionHandler.getDistance()));
+    
     Boolean [] switches = new Boolean[3];
     switches[0] = LimitSwitchSubsystem.turretSwitch.get();
     switches[1] = LimitSwitchSubsystem.hoodSwitch.get();
     switches[2] = LimitSwitchSubsystem.conveyorSwitch.get();
     SmartDashboard.putBooleanArray("Limit Switches (Turret, Hood, Conveyor):", switches);
+    
   }
 
   /**
@@ -128,7 +132,7 @@ public class RobotContainer {
       {
         m_intakeSubsystem.runIntakeForward();
       }
-      else if(m_controllerInputs.getController().getRawButton(11))
+      else if(m_controllerInputs.getRightJoystick().getRawButton(2))
       {
         m_intakeSubsystem.runIntakeReverse();
       }
@@ -140,15 +144,17 @@ public class RobotContainer {
       //Run the conveyor in forward or reverse
       if (m_controllerInputs.getRunConveyorForward())
       {
-        m_conveyorSubsystem.runConveyor(.5);;
+        m_conveyorSubsystem.runConveyor(.5);
+        manualConveyor = true;
       }
       else if (m_controllerInputs.getRunConveyorBackward())
       {
-        m_conveyorSubsystem.runConveyor(-.5);;
+        m_conveyorSubsystem.runConveyor(-.5);
+        manualConveyor = true;
       }
       else
       {
-        m_conveyorSubsystem.runConveyor(0);
+        manualConveyor = false;
       }
       //Rotate the turret manually, but only when we are not shooting
       if (!SystemConstants.isShooting)

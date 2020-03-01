@@ -21,6 +21,8 @@ public class ResetPose extends CommandBase
     @Override
     public void initialize()
     {
+        driveSubsystem.resetEncoders();
+        driveSubsystem.zeroHeading();
         driveSubsystem.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
         isFinished = true;
     }
