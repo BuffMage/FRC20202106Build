@@ -79,4 +79,37 @@ public class ControllerInputs
         return controller.getRawButton(1);
     }
 
+
+    //Temporary Climb Buttons
+
+    public boolean getRunElevatorUp()
+    {
+        return rightJoystick.getRawButton(6);
+    }
+
+    public boolean getRunElevatorDown()
+    {
+        return rightJoystick.getRawButton(7);
+    }
+
+    public boolean getPutElevatorUp()
+    {
+        return rightJoystick.getRawButton(8);
+    }
+
+    public boolean getPutElevatorDown()
+    {
+        return rightJoystick.getRawButton(9);
+    }
+
+    public boolean getRunWinchForward()
+    {
+        return rightJoystick.getRawButton(10);
+    }
+
+    public boolean getRunWinchReverse()
+    {
+        return rightJoystick.getRawButton(11);
+    }
+
 }

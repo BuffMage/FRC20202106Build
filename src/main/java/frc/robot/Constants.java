@@ -83,16 +83,16 @@ public final class Constants {
         public static final int kShooterMasterID = 4;
         public static final int kShooterFollowerID = 3;
         public static final int kIntakeMotorID = 6;
+        public static final int kElevatorMotorID = 5;
         //Spark MAX constants
-        public static final int kWinchMasterID = 6;
-        public static final int kWinchFollowerID = 7;
+        public static final int kWinchMotorID = 4;
         //Pneumatics and servo constants
         public static final int kServoPWMPort = 0;
         public static final int kServoDIOPort = 0;
         public static final int kIntakeSolenoidForward = 7;
         public static final int kIntakeSolenoidReverse = 6;
-        public static final int kClimbSolenoidForward = 2;
-        public static final int kClimbSolenoidReverse = 3;
+        public static final int kClimbSolenoidForward = 4;
+        public static final int kClimbSolenoidReverse = 5;
 
         public static boolean commandRunning = false;
         public static boolean isShooting = false;

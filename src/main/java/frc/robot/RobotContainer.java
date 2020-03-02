@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.SystemConstants;
 import frc.robot.auto.AutoSelector;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -42,6 +43,7 @@ public class RobotContainer {
   private static TurretSubsystem m_turretSubsystem;
   private static IntakeSubsystem m_intakeSubsystem;
   private static ConveyorSubsystem m_conveyorSubsystem;
+  private static ClimbSubsystem m_climbSubsystem;
   private VisionHandler visionHandler;
   private ServoHandler servoHandler;
 
@@ -60,6 +62,7 @@ public class RobotContainer {
     m_turretSubsystem = TurretSubsystem.getInstance();
     m_intakeSubsystem = IntakeSubsystem.getInstance();
     m_conveyorSubsystem = ConveyorSubsystem.getInstance();
+    m_climbSubsystem = ClimbSubsystem.getInstance();
     visionHandler = VisionHandler.getInstance();
     servoHandler = ServoHandler.getInstance();
     LimitSwitchSubsystem.initialize();
@@ -171,6 +174,35 @@ public class RobotContainer {
         {
           m_turretSubsystem.turretRotate(-m_controllerInputs.getController().getRawAxis(2));
         }
+      }
+
+      //Temporary Climb Buttons
+      if (m_controllerInputs.getPutElevatorUp()) m_climbSubsystem.putElevatorUp();
+      if (m_controllerInputs.getPutElevatorDown()) m_climbSubsystem.putElevatorDown();
+      if (m_controllerInputs.getRunElevatorUp())
+      {
+        m_climbSubsystem.runElevatorUp();
+      }
+      else if (m_controllerInputs.getRunElevatorDown())
+      {
+        m_climbSubsystem.runElevatorDown();
+      }
+      else
+      {
+        m_climbSubsystem.stopElevator();
+      }
+
+      if (m_controllerInputs.getRunWinchForward())
+      {
+        m_climbSubsystem.runWinchForward();
+      }
+      else if (m_controllerInputs.getRunWinchReverse())
+      {
+        m_climbSubsystem.runWinchReverse();
+      }
+      else
+      {
+        m_climbSubsystem.stopWinch();
       }
 
     }
