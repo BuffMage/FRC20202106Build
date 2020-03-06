@@ -17,9 +17,15 @@ public class DriveAndShoot
     
     public static Command getAutoCommand()
     {
+
         SequentialCommandGroup driveAndShoot = new SequentialCommandGroup(
-            new ParallelCommandGroup(new ResetTurret(), new ResetHood(), new ResetPose()),
-            new ParallelCommandGroup(new TurnTurretTo(100), DriveForward.getTrajectory()),
+            new ParallelCommandGroup(
+                new SequentialCommandGroup(
+                    new ParallelCommandGroup(new ResetTurret(), new ResetHood(), new ResetPose()),
+                    new TurnTurretTo(100)
+                ),
+                DriveForward.getTrajectory()
+            ),
             TurretSubsystem.getInstance().aimAndShoot()
         );
         

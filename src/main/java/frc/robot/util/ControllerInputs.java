@@ -11,6 +11,7 @@ public class ControllerInputs
     private Joystick rightJoystick;
     private Joystick leftJoystick;
     private XboxController controller;
+    private Joystick buttonBoard;
 
     public static ControllerInputs getInstance()
     {
@@ -27,6 +28,7 @@ public class ControllerInputs
         rightJoystick = new Joystick(ControlConstants.RIGHT_JOYSTICK_ID);
         leftJoystick = new Joystick(ControlConstants.LEFT_JOYSTICK_ID);
         controller = new XboxController(ControlConstants.CONTROLLER_ID);
+        buttonBoard = new Joystick(ControlConstants.BUTTONBOARD_ID);
     }
 
     public XboxController getController()
@@ -84,32 +86,32 @@ public class ControllerInputs
 
     public boolean getRunElevatorUp()
     {
-        return rightJoystick.getRawButton(6);
+        return buttonBoard.getRawButton(4);
     }
 
     public boolean getRunElevatorDown()
     {
-        return rightJoystick.getRawButton(7);
+        return buttonBoard.getRawButton(3);
     }
 
     public boolean getPutElevatorUp()
     {
-        return rightJoystick.getRawButton(8);
+        return buttonBoard.getRawButtonPressed(6);
     }
 
     public boolean getPutElevatorDown()
     {
-        return rightJoystick.getRawButton(9);
+        return buttonBoard.getRawButtonPressed(5);
     }
 
     public boolean getRunWinchForward()
     {
-        return rightJoystick.getRawButton(10);
+        return buttonBoard.getRawButton(1);
     }
 
     public boolean getRunWinchReverse()
     {
-        return rightJoystick.getRawButton(11);
+        return buttonBoard.getRawButton(2);
     }
 
 }

@@ -1,8 +1,10 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -28,7 +30,9 @@ public class ClimbSubsystem extends SubsystemBase {
 
   private ClimbSubsystem() {
     elevatorMotor = new TalonSRX(SystemConstants.kElevatorMotorID);
+    elevatorMotor.setNeutralMode(NeutralMode.Brake);
     winchMotor = new CANSparkMax(SystemConstants.kWinchMotorID, MotorType.kBrushless);
+    winchMotor.setIdleMode(IdleMode.kBrake);
     climbPiston = new DoubleSolenoid(SystemConstants.kClimbSolenoidForward, SystemConstants.kClimbSolenoidReverse);
   }
 

@@ -11,6 +11,6 @@ public class AutoSelector
 
     public static Command getAutoCommand()
     {
-        return FromLeft.getAutoCommand();
+        return DriveAndShoot.getAutoCommand();
     }
 }

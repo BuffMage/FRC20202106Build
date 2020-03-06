@@ -72,6 +72,7 @@ public final class Constants {
         public static final int RIGHT_JOYSTICK_ID = 1;
         public static final int LEFT_JOYSTICK_ID = 0;
         public static final int CONTROLLER_ID = 2;
+        public static final int BUTTONBOARD_ID = 3;
     }
 
     public static final class SystemConstants
@@ -89,8 +90,8 @@ public final class Constants {
         //Pneumatics and servo constants
         public static final int kServoPWMPort = 0;
         public static final int kServoDIOPort = 0;
-        public static final int kIntakeSolenoidForward = 7;
-        public static final int kIntakeSolenoidReverse = 6;
+        public static final int kIntakeSolenoidForward = 6;
+        public static final int kIntakeSolenoidReverse = 7;
         public static final int kClimbSolenoidForward = 4;
         public static final int kClimbSolenoidReverse = 5;
 
@@ -102,7 +103,7 @@ public final class Constants {
     public static final class TurretPIDConstants
     {
         public static final double kP = 0.05;
-        public static final double kI = 0.075;
+        public static final double kI = 0.12;
         public static final double kD = 0;
     }
 

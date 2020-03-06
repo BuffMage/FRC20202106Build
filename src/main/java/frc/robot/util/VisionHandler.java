@@ -67,11 +67,11 @@ public class VisionHandler
 
     public void setNormalView()
     {
-        table.getEntry("pipeline").setNumber(1);
+        table.getEntry("pipeline").setNumber(0);
     }
 
     public void setVisionProcessingView()
     {
-        table.getEntry("pipeline").setNumber(0);
+        table.getEntry("pipeline").setNumber(1);
     }
 }

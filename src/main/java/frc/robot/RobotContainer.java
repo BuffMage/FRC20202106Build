@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.SystemConstants;
 import frc.robot.auto.AutoSelector;
+import frc.robot.commands.TurnTurretTo;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -24,6 +25,8 @@ import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.util.ControllerInputs;
 import frc.robot.util.ParametricCalculator;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.util.ServoHandler;
 import frc.robot.util.VisionHandler;
@@ -75,11 +78,20 @@ public class RobotContainer {
   public void robotInit()
   {
     m_intakeSubsystem.pickupIntake();
+    m_climbSubsystem.putElevatorUp();
   }
 
   public void drive()
   {
-    m_robotDrive.arcadeDrive(m_controllerInputs.getLeftJoystick().getY(), m_controllerInputs.getRightJoystick().getX());
+    if (m_controllerInputs.getRightJoystick().getRawButton(3))
+    {
+      m_robotDrive.arcadeDrive(m_controllerInputs.getLeftJoystick().getY() * .5, m_controllerInputs.getRightJoystick().getX() * .5);
+    }
+    else
+    {
+      m_robotDrive.arcadeDrive(m_controllerInputs.getLeftJoystick().getY(), m_controllerInputs.getRightJoystick().getX());
+    }
+    
   }
 
   public void periodic()
@@ -177,8 +189,16 @@ public class RobotContainer {
       }
 
       //Temporary Climb Buttons
-      if (m_controllerInputs.getPutElevatorUp()) m_climbSubsystem.putElevatorUp();
-      if (m_controllerInputs.getPutElevatorDown()) m_climbSubsystem.putElevatorDown();
+      if (m_controllerInputs.getPutElevatorUp())
+      {
+        SequentialCommandGroup pistonUp = new SequentialCommandGroup(new TurnTurretTo(100), new InstantCommand(() -> m_climbSubsystem.putElevatorUp()));
+        pistonUp.schedule();
+      }
+      if (m_controllerInputs.getPutElevatorDown())
+      {
+        SequentialCommandGroup pistonDown = new SequentialCommandGroup(new TurnTurretTo(100), new InstantCommand(() -> m_climbSubsystem.putElevatorDown()));
+        pistonDown.schedule();
+      }
       if (m_controllerInputs.getRunElevatorUp())
       {
         m_climbSubsystem.runElevatorUp();
