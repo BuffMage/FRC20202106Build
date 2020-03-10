@@ -54,6 +54,8 @@ public class RobotContainer {
 
   public static boolean manualConveyor;
 
+  private static Command shootCommand;
+
 
 
   /**
@@ -79,6 +81,7 @@ public class RobotContainer {
   {
     m_intakeSubsystem.pickupIntake();
     m_climbSubsystem.putElevatorUp();
+    shootCommand = m_turretSubsystem.aimAndShoot();
   }
 
   public void drive()
@@ -130,8 +133,10 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    /*
     aimAndShootButton = new JoystickButton(m_controllerInputs.getController(), 4);
     aimAndShootButton.whenPressed(m_turretSubsystem.aimAndShoot());
+    */
   }
 
   public void buttonManager()
@@ -191,12 +196,15 @@ public class RobotContainer {
       //Temporary Climb Buttons
       if (m_controllerInputs.getPutElevatorUp())
       {
-        SequentialCommandGroup pistonUp = new SequentialCommandGroup(new TurnTurretTo(100), new InstantCommand(() -> m_climbSubsystem.putElevatorUp()));
+        
+        SequentialCommandGroup pistonUp = new SequentialCommandGroup(new TurnTurretTo(130), new InstantCommand(() -> m_climbSubsystem.putElevatorUp()));
         pistonUp.schedule();
+        
+        
       }
       if (m_controllerInputs.getPutElevatorDown())
       {
-        SequentialCommandGroup pistonDown = new SequentialCommandGroup(new TurnTurretTo(100), new InstantCommand(() -> m_climbSubsystem.putElevatorDown()));
+        SequentialCommandGroup pistonDown = new SequentialCommandGroup(new TurnTurretTo(130), new InstantCommand(() -> m_climbSubsystem.putElevatorDown()));
         pistonDown.schedule();
       }
       if (m_controllerInputs.getRunElevatorUp())
@@ -223,6 +231,25 @@ public class RobotContainer {
       else
       {
         m_climbSubsystem.stopWinch();
+      }
+
+      if (m_controllerInputs.getController().getRawButtonPressed(4))
+      {
+        shootCommand = m_turretSubsystem.aimAndShoot();
+        shootCommand.schedule();
+      }
+      else if (m_controllerInputs.getController().getRawButtonPressed(3) && shootCommand != null)
+      {
+        shootCommand.cancel();
+      }
+
+      if (m_controllerInputs.getController().getRawButtonPressed(2))
+      {
+        m_robotDrive.lockDrivetrain();
+      }
+      else if (m_controllerInputs.getController().getRawButtonPressed(1))
+      {
+        m_robotDrive.unlockDrivetrain();
       }
 
     }

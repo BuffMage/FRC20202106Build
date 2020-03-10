@@ -14,21 +14,25 @@ import frc.robot.subsystems.TurretSubsystem;
 
 public class DriveAndShoot
 {
-    
-    public static Command getAutoCommand()
-    {
 
-        SequentialCommandGroup driveAndShoot = new SequentialCommandGroup(
+    public static Command driveAndShoot;
+
+    public static void instantiateAutoCommand()
+    {
+        driveAndShoot = new SequentialCommandGroup(
             new ParallelCommandGroup(
                 new SequentialCommandGroup(
                     new ParallelCommandGroup(new ResetTurret(), new ResetHood(), new ResetPose()),
-                    new TurnTurretTo(100)
+                    new TurnTurretTo(130)
                 ),
                 DriveForward.getTrajectory()
             ),
             TurretSubsystem.getInstance().aimAndShoot()
         );
-        
+    }
+    
+    public static Command getAutoCommand()
+    {
         return driveAndShoot;
     }
 }

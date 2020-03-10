@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANEncoder;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,6 +25,8 @@ public class TurretSubsystem extends SubsystemBase {
   private static TalonSRX shooterMaster;
   private static TalonSRX shooterFollower;
   private int pidCounter;
+  private double turretPosition;
+  private double previousTurretRotation;
 
   public static TurretSubsystem getInstance()
   {
@@ -55,17 +58,20 @@ public class TurretSubsystem extends SubsystemBase {
     shooterMaster.config_kD(CannonPIDConstants.kPIDSlotX, CannonPIDConstants.kD, CannonPIDConstants.kTimeout);
     shooterMaster.setSelectedSensorPosition(0);
     pidCounter = 0;
+    turretPosition = turretMotor.getSelectedSensorPosition() / 4096;
   }
 
   @Override
   public void periodic() {
+    previousTurretRotation = turretPosition;
     SmartDashboard.putNumber("Cannon Velocity (RPM)", (shooterMaster.getSelectedSensorVelocity() / 409.6) * 60);
     SmartDashboard.putNumber("Turret Rotation", turretMotor.getSelectedSensorPosition() / 4096);
+    turretPosition = turretMotor.getSelectedSensorPosition() / 4096;
   }
 
   public double getTurretRotation()
   {
-    return turretMotor.getSelectedSensorPosition() / 4096;
+    return turretPosition;
   }
 
   /**

@@ -10,26 +10,40 @@ public class TurnTurretTo extends CommandBase
     double angleToTurnTo = 0;
     TurretSubsystem turretSubsystem;
     boolean isFinished = false;
+    boolean turningRight = true;
 
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     public TurnTurretTo(double angle)
     {
         angleToTurnTo = angle;
         turretSubsystem = TurretSubsystem.getInstance();
+        
     }
     
     @Override
     public void initialize()
     {
         isFinished = false;
+        if (-turretSubsystem.getTurretRotation() < angleToTurnTo)
+        {
+            turningRight = true;
+        }
+        else if (-turretSubsystem.getTurretRotation() > angleToTurnTo)
+        {
+            turningRight = false;
+        }
     }
 
     @Override
     public void execute()
     {
-        if (angleToTurnTo > -turretSubsystem.getTurretRotation())
+        if (angleToTurnTo > -turretSubsystem.getTurretRotation() && turningRight)
         {
             turretSubsystem.turretRotate(-.5);
+        }
+        else if (angleToTurnTo < -turretSubsystem.getTurretRotation() && !turningRight)
+        {
+            turretSubsystem.turretRotate(.5);
         }
         else
         {

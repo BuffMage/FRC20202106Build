@@ -78,7 +78,7 @@ public final class Constants {
     public static final class SystemConstants
     {
         //Talon SRX constants
-        public static final int kTurretMotorID = 2;
+        public static final int kTurretMotorID = 0;
         public static final int kKickerMotorID = 1;
         public static final int kConveyorMotorID = 7;
         public static final int kShooterMasterID = 4;

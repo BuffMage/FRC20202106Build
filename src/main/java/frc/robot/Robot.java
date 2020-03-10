@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.auto.AutoSelector;
+import frc.robot.auto.routines.DriveAndShoot;
 import frc.robot.auto.routines.FromLeft;
 import frc.robot.auto.routines.FromMiddle;
 import frc.robot.auto.routines.FromRight;
@@ -40,6 +41,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     visionHandler = VisionHandler.getInstance();
     m_robotContainer.robotInit();
+    DriveAndShoot.instantiateAutoCommand();
     //visionHandler.setNormalView();
     //autoChooser = new SendableChooser<Command>();
   }

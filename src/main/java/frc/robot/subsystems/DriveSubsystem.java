@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -176,6 +177,22 @@ public class DriveSubsystem extends SubsystemBase {
   public double getRightEncoderDistance()
   {
     return m_rightEncoder.getPosition();
+  }
+
+  public void lockDrivetrain()
+  {
+    m_leftMotor1.setIdleMode(IdleMode.kBrake);
+    m_leftMotor2.setIdleMode(IdleMode.kBrake);
+    m_rightMotor1.setIdleMode(IdleMode.kBrake);
+    m_rightMotor2.setIdleMode(IdleMode.kBrake);
+  }
+
+  public void unlockDrivetrain()
+  {
+    m_leftMotor1.setIdleMode(IdleMode.kCoast);
+    m_leftMotor2.setIdleMode(IdleMode.kCoast);
+    m_rightMotor1.setIdleMode(IdleMode.kCoast);
+    m_rightMotor2.setIdleMode(IdleMode.kCoast);
   }
 
 }
