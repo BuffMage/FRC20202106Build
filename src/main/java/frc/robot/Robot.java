@@ -13,13 +13,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.SystemConstants;
 import frc.robot.auto.AutoSelector;
 import frc.robot.auto.routines.DriveAndShoot;
-import frc.robot.auto.routines.FromLeft;
-import frc.robot.auto.routines.FromMiddle;
-import frc.robot.auto.routines.FromRight;
 import frc.robot.commands.ResetHood;
 import frc.robot.commands.ResetTurret;
+import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.util.VisionHandler;
 
 
@@ -31,7 +30,7 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
   private VisionHandler visionHandler;
 
-  //private SendableChooser<Command> autoChooser;
+  private SendableChooser<String> autoChooser;
 
 
   @Override
@@ -43,7 +42,11 @@ public class Robot extends TimedRobot {
     m_robotContainer.robotInit();
     DriveAndShoot.instantiateAutoCommand();
     //visionHandler.setNormalView();
-    //autoChooser = new SendableChooser<Command>();
+    autoChooser = new SendableChooser<>();
+    autoChooser.addOption("From Left", "FromLeft");
+    autoChooser.addOption("From Middle", "FromMiddle");
+    autoChooser.addOption("From Right", "FromRight");
+    SmartDashboard.putData("Select Auto", autoChooser);
   }
 
   @Override
@@ -53,12 +56,6 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    /*
-    autoChooser.addOption("From Left", FromLeft.getAutoCommand());
-    autoChooser.addOption("From Middle", FromMiddle.getAutoCommand());
-    autoChooser.addOption("From Right", FromRight.getAutoCommand());
-    SmartDashboard.putData(autoChooser);
-    */
   }
 
   @Override
@@ -93,8 +90,12 @@ public class Robot extends TimedRobot {
     // this line or comment it out.
     m_hoodTestCommand = new ResetHood();
     m_hoodTestCommand.schedule();
-    m_resetTurret = new ResetTurret();
-    m_resetTurret.schedule();
+    //m_resetTurret = new ResetTurret();
+    //m_resetTurret.schedule();
+    if (!SystemConstants.hasTurretReset)
+    {
+      TurretSubsystem.getInstance().resetTurretEncoder();
+    }
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }

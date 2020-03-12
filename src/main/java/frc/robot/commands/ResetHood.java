@@ -42,7 +42,7 @@ public class ResetHood extends CommandBase
         }
         else
         {
-            servoHandler.setSpeed(.5);
+            servoHandler.setSpeed(1);
         }
 
     }

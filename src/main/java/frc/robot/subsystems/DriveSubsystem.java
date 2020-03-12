@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
@@ -80,7 +81,15 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    m_odometry.update(Rotation2d.fromDegrees(getHeading()), -m_leftEncoder.getPosition() * (DriveConstants.kInvertedDrivetrain ? -1.0 : 1.0), m_rightEncoder.getPosition() * (DriveConstants.kInvertedDrivetrain ? -1.0 : 1.0));//Put a negative on one of these since we cant invert hall effect encoders.
+    if (DriveConstants.kInvertedDrivetrain)
+    {
+      m_odometry.update(Rotation2d.fromDegrees(getHeading()), -m_rightEncoder.getPosition(), m_leftEncoder.getPosition());
+    }
+    else
+    {
+      m_odometry.update(Rotation2d.fromDegrees(getHeading()), -m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
+    }//Put a negative on one of these since we cant invert hall effect encoders.
+    SmartDashboard.putNumber("Heading", getHeading());
 
   }
 
@@ -88,8 +97,11 @@ public class DriveSubsystem extends SubsystemBase {
   
   public DifferentialDriveWheelSpeeds getWheelSpeeds()
   {
-    
-    return new DifferentialDriveWheelSpeeds(-m_leftEncoder.getVelocity() * (DriveConstants.kInvertedDrivetrain ? -1.0 : 1.0), m_rightEncoder.getVelocity() * (DriveConstants.kInvertedDrivetrain ? -1.0 : 1.0));
+    if (DriveConstants.kInvertedDrivetrain)
+    {
+      return new DifferentialDriveWheelSpeeds(-m_rightEncoder.getVelocity(), m_leftEncoder.getVelocity());
+    }
+    return new DifferentialDriveWheelSpeeds(-m_leftEncoder.getVelocity(), m_rightEncoder.getVelocity());
   }
 
   public Pose2d getPose()
@@ -99,8 +111,16 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void tankDriveVolts(double leftVolts, double rightVolts)
   {
-    m_leftMotors.setVoltage(-leftVolts * (DriveConstants.kInvertedDrivetrain ? -1.0 : 1.0));
-    m_rightMotors.setVoltage(rightVolts * (DriveConstants.kInvertedDrivetrain ? -1.0 : 1.0));
+    if (DriveConstants.kInvertedDrivetrain)
+    {
+      m_leftMotors.setVoltage(rightVolts);
+      m_rightMotors.setVoltage(-leftVolts);
+    }
+    else
+    {
+      m_leftMotors.setVoltage(-leftVolts);
+      m_rightMotors.setVoltage(rightVolts);
+    }
     m_drive.feed();
   }
 
@@ -159,13 +179,13 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void invertDrivetrain()
   {
-    DriveConstants.kGyroReversed = false;
+    //DriveConstants.kGyroReversed = false;
     DriveConstants.kInvertedDrivetrain = true;
   }
 
   public void unInvertDrivetrain()
   {
-    DriveConstants.kGyroReversed = true;
+    //DriveConstants.kGyroReversed = true;
     DriveConstants.kInvertedDrivetrain = false;
   }
 

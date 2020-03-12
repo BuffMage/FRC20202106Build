@@ -27,7 +27,7 @@ import frc.robot.util.ParametricCalculator;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+//import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.util.ServoHandler;
 import frc.robot.util.VisionHandler;
 
@@ -50,7 +50,7 @@ public class RobotContainer {
   private VisionHandler visionHandler;
   private ServoHandler servoHandler;
 
-  private static JoystickButton aimAndShootButton;
+  //private static JoystickButton aimAndShootButton;
 
   public static boolean manualConveyor;
 
@@ -81,7 +81,7 @@ public class RobotContainer {
   {
     m_intakeSubsystem.pickupIntake();
     m_climbSubsystem.putElevatorUp();
-    shootCommand = m_turretSubsystem.aimAndShoot();
+    shootCommand = m_turretSubsystem.aimAndShootBetter();
   }
 
   public void drive()
@@ -179,13 +179,13 @@ public class RobotContainer {
       //Rotate the turret manually, but only when we are not shooting
       if (!SystemConstants.isShooting)
       {
-        if (-m_controllerInputs.getController().getRawAxis(2) > .2)
+        if (-m_controllerInputs.getController().getRawAxis(2) > .4)
         {
-          m_turretSubsystem.turretRotate(.2);
+          m_turretSubsystem.turretRotate(.4);
         }
-        else if (-m_controllerInputs.getController().getRawAxis(2) < -.2)
+        else if (-m_controllerInputs.getController().getRawAxis(2) < -.4)
         {
-          m_turretSubsystem.turretRotate(-.2);
+          m_turretSubsystem.turretRotate(-.4);
         }
         else
         {
@@ -193,18 +193,18 @@ public class RobotContainer {
         }
       }
 
-      //Temporary Climb Buttons
+      //Climb Buttons
       if (m_controllerInputs.getPutElevatorUp())
       {
         
-        SequentialCommandGroup pistonUp = new SequentialCommandGroup(new TurnTurretTo(130), new InstantCommand(() -> m_climbSubsystem.putElevatorUp()));
+        SequentialCommandGroup pistonUp = new SequentialCommandGroup(new TurnTurretTo(60), new InstantCommand(() -> m_climbSubsystem.putElevatorUp()));
         pistonUp.schedule();
         
         
       }
       if (m_controllerInputs.getPutElevatorDown())
       {
-        SequentialCommandGroup pistonDown = new SequentialCommandGroup(new TurnTurretTo(130), new InstantCommand(() -> m_climbSubsystem.putElevatorDown()));
+        SequentialCommandGroup pistonDown = new SequentialCommandGroup(new TurnTurretTo(60), new InstantCommand(() -> m_climbSubsystem.putElevatorDown()));
         pistonDown.schedule();
       }
       if (m_controllerInputs.getRunElevatorUp())
@@ -235,7 +235,7 @@ public class RobotContainer {
 
       if (m_controllerInputs.getController().getRawButtonPressed(4))
       {
-        shootCommand = m_turretSubsystem.aimAndShoot();
+        shootCommand = m_turretSubsystem.aimAndShootBetter();
         shootCommand.schedule();
       }
       else if (m_controllerInputs.getController().getRawButtonPressed(3) && shootCommand != null)

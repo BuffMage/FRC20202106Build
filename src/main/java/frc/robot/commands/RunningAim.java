@@ -8,20 +8,18 @@ import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.util.VisionHandler;
 
 
-public class AimTurret extends CommandBase
+public class RunningAim extends CommandBase
 {
     private PIDController turretPID;
     private TurretSubsystem turretSubsystem;
     private VisionHandler visionHandler;
     private double setpoint;
     private double tolerance;
-    private int counter;
     private double max;
     private double min;
-    private double timeout;
 
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-    public AimTurret()
+    public RunningAim()
     {
         turretPID = new PIDController(
             TurretPIDConstants.kP, 
@@ -33,10 +31,8 @@ public class AimTurret extends CommandBase
         setpoint = 0;//Since we want to center the turret on the target
         tolerance = .5;// within half a degree of acurracy
         //Maximum and minimum values for turret output
-        max = .4;
-        min = -.4;
-        //How long should we wait to see if we are at our setpoint
-        timeout = .24;
+        max = .2;
+        min = -.2;
     }
     
     @Override
@@ -74,35 +70,21 @@ public class AimTurret extends CommandBase
         if (interrupted)
         {
             SystemConstants.isShooting = false;
-            System.out.println("Warning! AimTurret has stopped unexpectedly");
+            System.out.println("Warning! RunningAim has stopped unexpectedly");
             visionHandler.setNormalView();
         }
         else
         {
-            System.out.println("Aimed! Proceed with distance and RPM calculations");
+            //System.out.println("Aimed! Proceed with distance and RPM calculations");
         }
         turretPID.reset();
         turretSubsystem.turretRotate(0);
-        counter = 0;
         
     }
 
     @Override
     public boolean isFinished()
     {
-        
-        if (turretPID.atSetpoint())
-        {
-            counter++;
-        }
-        else
-        {
-            counter = 0;
-        }
-        if (counter >= (int)(timeout / .02))
-        {
-            return true;
-        }
         return false;
     }
 }

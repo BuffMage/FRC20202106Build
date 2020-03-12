@@ -11,7 +11,7 @@ import frc.robot.util.VisionHandler;
 
 public class ShootPowerCells extends CommandBase
 {
-    private static double fiveCellShotTime = 3.5;
+    private static double fiveCellShotTime = 1.5;
     private static ConveyorSubsystem conveyorSubsystem;
     private static IntakeSubsystem intakeSubsystem;
     private static TurretSubsystem turretSubsystem;
@@ -46,11 +46,11 @@ public class ShootPowerCells extends CommandBase
         counter++;
         if (counter < 6)
         {
-            conveyorSubsystem.runConveyor(-.5);
+            conveyorSubsystem.runConveyor(-1);
         }
         else if (counter >= 6)
         {
-            conveyorSubsystem.runConveyor(.5);
+            conveyorSubsystem.runConveyor(1);
         }
         if (counter >= 12 && counter < 18)
         {
@@ -73,7 +73,7 @@ public class ShootPowerCells extends CommandBase
         conveyorSubsystem.stopKicker();
         conveyorSubsystem.runConveyor(0);
         turretSubsystem.cannonSpin(0);
-        servoHandler.setAngle(0);
+        //servoHandler.setAngle(0);
         visionHandler.setNormalView();
         if (interrupted)
         {

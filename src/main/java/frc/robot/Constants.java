@@ -48,7 +48,7 @@ public final class Constants {
         public static final double kvVoltSecondsPerMeter = 2.88;
         public static final double kaVoltSecondsSquaredPerMeter = 0.353;
 
-        public static final double kPDriveVel = 2.5;
+        public static final double kPDriveVel = 3.5;
 
         
         public static final DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
@@ -98,19 +98,21 @@ public final class Constants {
         public static boolean commandRunning = false;
         public static boolean isShooting = false;
         public static boolean isTurretResetting = false;
+        public static boolean hasTurretReset = false;
+        public static boolean stopIntake = false;
     }
 
     public static final class TurretPIDConstants
     {
-        public static final double kP = 0.05;
-        public static final double kI = 0.12;
+        public static final double kP = 0.08;
+        public static final double kI = 0;//.12
         public static final double kD = 0;
     }
 
     public static final class CannonPIDConstants
     {
         public static final int kPIDSlotX = 0;
-        public static final double kF = 0.04;
+        public static final double kF = 0.035;
         public static final double kP = 0.25;
         public static final double kI = 0;
         public static final double kD = 0.5;

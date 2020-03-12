@@ -29,6 +29,7 @@ public class SetCannonSpeed extends CommandBase
     {
         isFinished = false;
         turretSubsystem.cannonSpinPID(ParametricCalculator.getInitialVelocity(visionHandler.getDistance()) * velocityToRPMConversionFactor);
+        turretSubsystem.resetCannonPID();
     }
 
     @Override

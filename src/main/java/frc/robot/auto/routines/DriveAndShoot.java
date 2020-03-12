@@ -23,7 +23,7 @@ public class DriveAndShoot
             new ParallelCommandGroup(
                 new SequentialCommandGroup(
                     new ParallelCommandGroup(new ResetTurret(), new ResetHood(), new ResetPose()),
-                    new TurnTurretTo(130)
+                    new TurnTurretTo(60)
                 ),
                 DriveForward.getTrajectory()
             ),

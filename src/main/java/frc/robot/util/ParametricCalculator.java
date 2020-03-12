@@ -4,8 +4,10 @@ import frc.robot.Constants.CannonPIDConstants;
 
 public class ParametricCalculator
 {
+    private static double dist = 0;
     private static double vertVel = 2 * Math.sqrt(4.9 * CannonPIDConstants.kCannonToTargetHeight);
     private static double horVel = 0;
+    private static double velocityToRPMConversionFactor = 4500 / 7.6;
 
     /**
      * Calculates the required hood angle based on our distance from the target
@@ -31,6 +33,12 @@ public class ParametricCalculator
 
     private static void calculateHorizontalVelocity(double distance)
     {
+        dist = distance;
         horVel = (9.8 * distance) / vertVel;
+    }
+
+    public static double getRPM()
+    {
+        return getInitialVelocity(dist) * velocityToRPMConversionFactor;
     }
 }

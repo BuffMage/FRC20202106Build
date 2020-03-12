@@ -34,10 +34,13 @@ public class ConveyorSubsystem extends SubsystemBase {
     if (LimitSwitchSubsystem.conveyorSwitch.get() && !RobotContainer.manualConveyor)
     {
       runConveyor(.5);
+      SystemConstants.stopIntake = true;
+      IntakeSubsystem.getInstance().stopIntake();
     }
     else if (!RobotContainer.manualConveyor)
     {
       runConveyor(0);
+      SystemConstants.stopIntake = false;
     }
 
   }

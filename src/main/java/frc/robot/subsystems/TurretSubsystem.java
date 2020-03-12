@@ -3,20 +3,23 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.revrobotics.CANEncoder;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CannonPIDConstants;
 import frc.robot.Constants.SystemConstants;
 import frc.robot.commands.AimTurret;
+import frc.robot.commands.ApproximateHoodAndCannon;
 import frc.robot.commands.PrimeCannon;
+import frc.robot.commands.RunningAim;
 import frc.robot.commands.SetCannonSpeed;
 import frc.robot.commands.SetHoodAngle;
 import frc.robot.commands.ShootPowerCells;
+import frc.robot.util.ParametricCalculator;
 
 public class TurretSubsystem extends SubsystemBase {
 
@@ -26,7 +29,6 @@ public class TurretSubsystem extends SubsystemBase {
   private static TalonSRX shooterFollower;
   private int pidCounter;
   private double turretPosition;
-  private double previousTurretRotation;
 
   public static TurretSubsystem getInstance()
   {
@@ -63,9 +65,9 @@ public class TurretSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    previousTurretRotation = turretPosition;
     SmartDashboard.putNumber("Cannon Velocity (RPM)", (shooterMaster.getSelectedSensorVelocity() / 409.6) * 60);
     SmartDashboard.putNumber("Turret Rotation", turretMotor.getSelectedSensorPosition() / 4096);
+    SmartDashboard.putNumber("Cannon Calculated RPM", ParametricCalculator.getRPM());
     turretPosition = turretMotor.getSelectedSensorPosition() / 4096;
   }
 
@@ -83,11 +85,11 @@ public class TurretSubsystem extends SubsystemBase {
   {
     value = clampValue(value);
     
-    if ((-turretMotor.getSelectedSensorPosition() / 4096 <= 30 && value > 0) && !SystemConstants.isTurretResetting)
+    if ((-turretMotor.getSelectedSensorPosition() / 4096 <= -55 && value > 0) && !SystemConstants.isTurretResetting)
     {
       value = 0;
     }
-    else if ((-turretMotor.getSelectedSensorPosition() / 4096 >= 180 && value < 0) && !SystemConstants.isTurretResetting)
+    else if ((-turretMotor.getSelectedSensorPosition() / 4096 >= 140 && value < 0) && !SystemConstants.isTurretResetting)
     {
       value = 0;
     }
@@ -165,8 +167,32 @@ public class TurretSubsystem extends SubsystemBase {
     return aimAndShootCommand;
   }
 
+  public Command aimAndShootBetter()
+  {
+    Command aimAndShootCommand = new SequentialCommandGroup(
+      new ParallelDeadlineGroup(
+        new AimTurret(),
+        new ApproximateHoodAndCannon()),
+      new ParallelDeadlineGroup(
+        new ParallelCommandGroup(
+          new SetHoodAngle(),
+          new SetCannonSpeed()),
+        new RunningAim()),
+      new ParallelDeadlineGroup(
+        new ShootPowerCells(), 
+        new RunningAim())
+    );
+    return aimAndShootCommand;
+  }
+
   public void resetTurretEncoder()
   {
     turretMotor.setSelectedSensorPosition(0);
+    SystemConstants.hasTurretReset = true;
+  }
+
+  public void resetCannonPID()
+  {
+    pidCounter = 0;
   }
 }
